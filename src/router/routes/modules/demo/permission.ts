@@ -46,7 +46,7 @@ const permission: AppRouteModule = {
           component: () => import('/@/views/demo/permission/front/AuthPageA.vue'),
           meta: {
             title: t('routes.demo.permission.frontTestA'),
-            roles: [RoleEnum.SUPER],
+            roles: [RoleEnum.ADMIN],
           },
         },
         {
@@ -55,7 +55,7 @@ const permission: AppRouteModule = {
           component: () => import('/@/views/demo/permission/front/AuthPageB.vue'),
           meta: {
             title: t('routes.demo.permission.frontTestB'),
-            roles: [RoleEnum.TEST],
+            roles: [RoleEnum.GENERAL],
           },
         },
       ],

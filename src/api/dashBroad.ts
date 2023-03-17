@@ -22,9 +22,6 @@ export enum GoodsColumns {
   PIC_URLS = 'pic_urls',
 }
 
-/**
- * @description: user login api
- */
 export function DashBroadApi(params: SearchBase<GoodsColumns>, mode: ErrorMessageMode = 'modal') {
   return defHttp.post<SearchBase<GoodsColumns>>(
     {

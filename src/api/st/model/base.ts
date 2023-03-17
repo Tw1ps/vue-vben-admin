@@ -1,14 +1,11 @@
-export interface BasicPageParams {
-  page: number;
-  pageSize: number;
+export function createLabelArray(src: {}) {
+  const tmp = Array<{ label: string; value: any }>();
+  for (const k in src) {
+    tmp.push({ label: k, value: src[k] });
+  }
+  return tmp;
 }
 
-export interface BasicFetchResult<T> {
-  items: T[];
-  total: number;
-}
-
-// 前后端交互
 export enum Operator {
   EQ = '==',
   NE = '!=',
@@ -26,30 +23,21 @@ export enum Operator {
   // REGEXP_REPLACE = 'REGEXP_REPLACE',
 }
 
-export const OperatorArray: Array<{ label: string; value: Operator }> = [];
-for (const k in Operator) {
-  OperatorArray.push({ label: k, value: Operator[k] });
-}
+export const OperatorArray = createLabelArray(Operator);
 
 export enum Order {
   ASC = 'asc',
   DESC = 'desc',
 }
 
-export const OrderArray: Array<{ label: string; value: Order }> = [];
-for (const k in Order) {
-  OrderArray.push({ label: k, value: Order[k] });
-}
+export const OrderArray = createLabelArray(Order);
 
 export enum Bop {
   AND = 'AND',
   OR = 'OR',
 }
 
-export const BopArray: Array<{ label: string; value: Bop }> = [];
-for (const k in Bop) {
-  BopArray.push({ label: k, value: Bop[k] });
-}
+export const BopArray = createLabelArray(Bop);
 
 export interface Field<T> {
   options?: any;
@@ -80,6 +68,7 @@ export interface ColumnsType {
   datetime?: Array<string>;
   number?: Array<string>;
   boolean?: Array<string>;
+  select: {};
 }
 
 export interface BaseOptions {

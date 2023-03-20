@@ -11,11 +11,11 @@ enum Api {
   DELETE = '/api/censor/delete',
 }
 
-export function getCensorApi(params: SearchBase<CensorColumns>, mode: ErrorMessageMode = 'modal') {
+export function getCensorApi(data: SearchBase<CensorColumns>, mode: ErrorMessageMode = 'modal') {
   return defHttp.post<WebResponse<Array<Censor>>>(
     {
       url: Api.SEARCH,
-      params,
+      data,
     },
     {
       errorMessageMode: mode,
@@ -23,14 +23,11 @@ export function getCensorApi(params: SearchBase<CensorColumns>, mode: ErrorMessa
   );
 }
 
-export function deleteCensorApi(
-  params: SearchBase<CensorColumns>,
-  mode: ErrorMessageMode = 'modal',
-) {
+export function deleteCensorApi(data: SearchBase<CensorColumns>, mode: ErrorMessageMode = 'modal') {
   return defHttp.post<WebResponse<boolean>>(
     {
       url: Api.DELETE,
-      params,
+      data,
     },
     {
       errorMessageMode: mode,

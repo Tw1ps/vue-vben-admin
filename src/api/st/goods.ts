@@ -8,11 +8,11 @@ enum Api {
   SEARCH = '/api/goods/',
 }
 
-export function getGoodsApi(params: SearchBase<GoodsColumns>, mode: ErrorMessageMode = 'modal') {
+export function getGoodsApi(data: SearchBase<GoodsColumns>, mode: ErrorMessageMode = 'modal') {
   return defHttp.post<WebResponse<Array<Goods>>>(
     {
       url: Api.SEARCH,
-      params,
+      data,
     },
     {
       errorMessageMode: mode,

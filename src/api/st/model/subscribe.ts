@@ -21,16 +21,7 @@ export enum SubscribeColumns {
   PODCASTER_USER = 'podcaster_user',
 }
 
-export enum SubscribeColumnsUpdate {
-  LISTENER = 'listener',
-  PODCASTER = 'podcaster',
-  FILTR = 'filtr',
-  LISTENER_USER = 'listener_user',
-  PODCASTER_USER = 'podcaster_user',
-}
-
 export const SubscribeColumnsArray = createLabelArray(SubscribeColumns);
-export const SubscribeColumnsUpdateArray = createLabelArray(SubscribeColumnsUpdate);
 
 export const SubscribeColumnsType = {
   datetime: [],

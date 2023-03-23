@@ -1,5 +1,5 @@
 import { defHttp } from '/@/utils/http/axios';
-import { Field, SearchBase, WebResponse } from './model/base';
+import { Field, Search, WebResponse } from './model/base';
 import {
   UserColumns,
   User,
@@ -12,15 +12,15 @@ import {
 import { ErrorMessageMode } from '/#/axios';
 
 enum Api {
-  SEARCH = '/api/user/',
-  CREATE = '/api/user/create',
-  CREATEADVANCED = '/api/user/create/advanced',
-  DELETE = '/api/user/delete',
-  UPDATE = '/api/user/update',
-  UPDATEADVANCED = '/api/user/update/advanced',
+  SEARCH = '/user/',
+  CREATE = '/user/create',
+  CREATEADVANCED = '/user/create/advanced',
+  DELETE = '/user/delete',
+  UPDATE = '/user/update',
+  UPDATEADVANCED = '/user/update/advanced',
 }
 
-export function getUserApi(data: SearchBase<UserColumns>, mode: ErrorMessageMode = 'modal') {
+export function getUserApi(data: Search<UserColumns>, mode: ErrorMessageMode = 'modal') {
   return defHttp.post<WebResponse<Array<User>>>(
     {
       url: Api.SEARCH,
@@ -32,7 +32,7 @@ export function getUserApi(data: SearchBase<UserColumns>, mode: ErrorMessageMode
   );
 }
 
-export function deleteUserApi(data: SearchBase<UserColumns>, mode: ErrorMessageMode = 'modal') {
+export function deleteUserApi(data: Search<UserColumns>, mode: ErrorMessageMode = 'modal') {
   return defHttp.post<WebResponse<boolean>>(
     {
       url: Api.DELETE,
@@ -62,7 +62,7 @@ export function updateUserApi(
 }
 
 export function updateUserAdvancedApi(
-  data: { keyword: SearchBase<UserColumns>; new_values: Array<Field<AdvancedUserColumnsUpdate>> },
+  data: { keyword: Search<UserColumns>; new_values: Array<Field<AdvancedUserColumnsUpdate>> },
   mode: ErrorMessageMode = 'modal',
 ) {
   return defHttp.post<WebResponse<boolean>>(

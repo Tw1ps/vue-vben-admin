@@ -1,18 +1,7 @@
 import { createLabelArray } from './base';
+import { Goods } from './goods';
 
-export interface Censor {
-  id: number;
-  url: string;
-  unique_hash: string;
-  title?: string;
-  intro?: string;
-  date?: Date;
-  keyword?: Array<string>;
-  category?: string;
-  info?: {};
-  created_date: Date;
-  source: string;
-  pic_urls?: Array<string>;
+export interface Censor extends Goods {
   watch_id: number;
   user_id: number;
 }
@@ -40,4 +29,5 @@ export const CensorColumnsType = {
   datetime: [CensorColumns.DATE, CensorColumns.CREATED_DATE],
   number: [CensorColumns.ID, CensorColumns.WATCH_ID, CensorColumns.USER_ID],
   boolean: [],
+  select: {},
 };

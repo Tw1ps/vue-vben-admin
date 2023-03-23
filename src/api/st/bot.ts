@@ -1,18 +1,18 @@
 import { defHttp } from '/@/utils/http/axios';
-import { Field, SearchBase, WebResponse } from './model/base';
+import { Field, Search, WebResponse } from './model/base';
 import { BotColumns, Bot, BotCreate, BotColumnsUpdate, BotColumnsNative } from './model/bot';
 
 import { ErrorMessageMode } from '/#/axios';
 
 enum Api {
-  SEARCH = '/api/bot/',
-  CREATE = '/api/bot/create',
-  DELETE = '/api/bot/delete',
-  UPDATE = '/api/bot/update',
-  TEST = '/api/bot/test',
+  SEARCH = '/bot/',
+  CREATE = '/bot/create',
+  DELETE = '/bot/delete',
+  UPDATE = '/bot/update',
+  TEST = '/bot/test',
 }
 
-export function getBotApi(data: SearchBase<BotColumns>, mode: ErrorMessageMode = 'modal') {
+export function getBotApi(data: Search<BotColumns>, mode: ErrorMessageMode = 'modal') {
   return defHttp.post<WebResponse<Array<Bot>>>(
     {
       url: Api.SEARCH,
@@ -24,7 +24,7 @@ export function getBotApi(data: SearchBase<BotColumns>, mode: ErrorMessageMode =
   );
 }
 
-export function deleteBotApi(data: SearchBase<BotColumnsNative>, mode: ErrorMessageMode = 'modal') {
+export function deleteBotApi(data: Search<BotColumnsNative>, mode: ErrorMessageMode = 'modal') {
   return defHttp.post<WebResponse<boolean>>(
     {
       url: Api.DELETE,
@@ -37,7 +37,7 @@ export function deleteBotApi(data: SearchBase<BotColumnsNative>, mode: ErrorMess
 }
 
 export function updateBotApi(
-  data: { keyword: SearchBase<BotColumns>; new_values: Array<Field<BotColumnsUpdate>> },
+  data: { keyword: Search<BotColumns>; new_values: Array<Field<BotColumnsUpdate>> },
   mode: ErrorMessageMode = 'modal',
 ) {
   return defHttp.post<WebResponse<boolean>>(

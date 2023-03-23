@@ -49,7 +49,7 @@ export interface Field<T> {
   fields?: Field<T>[];
 }
 
-export interface SearchBase<T> {
+export interface Search<T> {
   offset: number | undefined | null;
   limit: number | undefined | null;
   order_field: T | undefined | null;

@@ -1,5 +1,5 @@
 import { defHttp } from '/@/utils/http/axios';
-import { Field, SearchBase, WebResponse } from './model/base';
+import { Field, Search, WebResponse } from './model/base';
 import {
   KeywordColumns,
   Keyword,
@@ -11,14 +11,14 @@ import {
 import { ErrorMessageMode } from '/#/axios';
 
 enum Api {
-  SEARCH = '/api/keyword/',
-  CREATE = '/api/keyword/create',
-  DELETE = '/api/keyword/delete',
-  UPDATE = '/api/keyword/update',
-  UPLOAD = '/api/keyword/upload',
+  SEARCH = '/keyword/',
+  CREATE = '/keyword/create',
+  DELETE = '/keyword/delete',
+  UPDATE = '/keyword/update',
+  UPLOAD = '/keyword/upload',
 }
 
-export function getKeywordApi(data: SearchBase<KeywordColumns>, mode: ErrorMessageMode = 'modal') {
+export function getKeywordApi(data: Search<KeywordColumns>, mode: ErrorMessageMode = 'modal') {
   return defHttp.post<WebResponse<Array<Keyword>>>(
     {
       url: Api.SEARCH,
@@ -31,7 +31,7 @@ export function getKeywordApi(data: SearchBase<KeywordColumns>, mode: ErrorMessa
 }
 
 export function deleteKeywordApi(
-  data: SearchBase<KeywordColumnsNative>,
+  data: Search<KeywordColumnsNative>,
   mode: ErrorMessageMode = 'modal',
 ) {
   return defHttp.post<WebResponse<boolean>>(
@@ -46,7 +46,7 @@ export function deleteKeywordApi(
 }
 
 export function updateKeywordApi(
-  data: { keyword: SearchBase<KeywordColumns>; new_values: Array<Field<KeywordColumnsUpdate>> },
+  data: { keyword: Search<KeywordColumns>; new_values: Array<Field<KeywordColumnsUpdate>> },
   mode: ErrorMessageMode = 'modal',
 ) {
   return defHttp.post<WebResponse<boolean>>(

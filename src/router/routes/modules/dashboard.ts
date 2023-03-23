@@ -2,7 +2,6 @@ import type { AppRouteModule } from '/@/router/types';
 
 import { LAYOUT } from '/@/router/constant';
 import { t } from '/@/hooks/web/useI18n';
-import { RoleEnum } from '/@/enums/roleEnum';
 
 const dashboard: AppRouteModule = {
   path: '/dashboard',
@@ -18,28 +17,10 @@ const dashboard: AppRouteModule = {
     {
       path: 'analysis',
       name: 'Analysis',
-      component: () => import('/@/views/dashboard/analysis/index.vue'),
+      component: () => import('/@/views/st/analysis/index.vue'),
       meta: {
         // affix: true,
         title: t('routes.dashboard.analysis'),
-      },
-    },
-    {
-      path: 'test',
-      name: 'test',
-      component: () => import('/@/views/dashboard/test/index.vue'),
-      meta: {
-        // affix: true,
-        title: t('routes.dashboard.test'),
-        roles: [RoleEnum.ADMIN],
-      },
-    },
-    {
-      path: 'workbench',
-      name: 'Workbench',
-      component: () => import('/@/views/dashboard/workbench/index.vue'),
-      meta: {
-        title: t('routes.dashboard.workbench'),
       },
     },
   ],

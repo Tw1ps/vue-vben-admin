@@ -1,17 +1,17 @@
 import { defHttp } from '/@/utils/http/axios';
-import { Field, SearchBase, WebResponse } from './model/base';
+import { Field, Search, WebResponse } from './model/base';
 import { WatchColumns, Watch, WatchCreate, WatchColumnsUpdate } from './model/watch';
 
 import { ErrorMessageMode } from '/#/axios';
 
 enum Api {
-  SEARCH = '/api/watch/',
-  CREATE = '/api/watch/create',
-  DELETE = '/api/watch/delete',
-  UPDATE = '/api/watch/update',
+  SEARCH = '/watch/',
+  CREATE = '/watch/create',
+  DELETE = '/watch/delete',
+  UPDATE = '/watch/update',
 }
 
-export function getWatchApi(data: SearchBase<WatchColumns>, mode: ErrorMessageMode = 'modal') {
+export function getWatchApi(data: Search<WatchColumns>, mode: ErrorMessageMode = 'modal') {
   return defHttp.post<WebResponse<Array<Watch>>>(
     {
       url: Api.SEARCH,
@@ -23,7 +23,7 @@ export function getWatchApi(data: SearchBase<WatchColumns>, mode: ErrorMessageMo
   );
 }
 
-export function deleteWatchApi(data: SearchBase<WatchColumns>, mode: ErrorMessageMode = 'modal') {
+export function deleteWatchApi(data: Search<WatchColumns>, mode: ErrorMessageMode = 'modal') {
   return defHttp.post<WebResponse<boolean>>(
     {
       url: Api.DELETE,
@@ -36,7 +36,7 @@ export function deleteWatchApi(data: SearchBase<WatchColumns>, mode: ErrorMessag
 }
 
 export function updateWatchApi(
-  data: { keyword: SearchBase<WatchColumns>; new_values: Array<Field<WatchColumnsUpdate>> },
+  data: { keyword: Search<WatchColumns>; new_values: Array<Field<WatchColumnsUpdate>> },
   mode: ErrorMessageMode = 'modal',
 ) {
   return defHttp.post<WebResponse<boolean>>(

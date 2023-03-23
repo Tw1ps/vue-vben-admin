@@ -1,5 +1,5 @@
 import { defHttp } from '/@/utils/http/axios';
-import { Field, SearchBase, WebResponse } from './model/base';
+import { Field, Search, WebResponse } from './model/base';
 import {
   AccountColumns,
   Account,
@@ -11,13 +11,13 @@ import {
 import { ErrorMessageMode } from '/#/axios';
 
 enum Api {
-  SEARCH = '/api/account/',
-  CREATE = '/api/account/create',
-  DELETE = '/api/account/delete',
-  UPDATE = '/api/account/update',
+  SEARCH = '/account/',
+  CREATE = '/account/create',
+  DELETE = '/account/delete',
+  UPDATE = '/account/update',
 }
 
-export function getAccountApi(data: SearchBase<AccountColumns>, mode: ErrorMessageMode = 'modal') {
+export function getAccountApi(data: Search<AccountColumns>, mode: ErrorMessageMode = 'modal') {
   return defHttp.post<WebResponse<Array<Account>>>(
     {
       url: Api.SEARCH,
@@ -30,7 +30,7 @@ export function getAccountApi(data: SearchBase<AccountColumns>, mode: ErrorMessa
 }
 
 export function deleteAccountApi(
-  data: SearchBase<AccountColumnsNative>,
+  data: Search<AccountColumnsNative>,
   mode: ErrorMessageMode = 'modal',
 ) {
   return defHttp.post<WebResponse<boolean>>(
@@ -45,7 +45,7 @@ export function deleteAccountApi(
 }
 
 export function updateAccountApi(
-  data: { keyword: SearchBase<AccountColumns>; new_values: Array<Field<AccountColumnsUpdate>> },
+  data: { keyword: Search<AccountColumns>; new_values: Array<Field<AccountColumnsUpdate>> },
   mode: ErrorMessageMode = 'modal',
 ) {
   return defHttp.post<WebResponse<boolean>>(

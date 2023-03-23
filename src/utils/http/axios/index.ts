@@ -66,7 +66,7 @@ const transform: AxiosTransform = {
       } else if (options.successMessageMode === 'message') {
         createMessage.success(successMsg);
       }
-      return data.data;
+      return data;
     }
 
     // 在此处根据自己项目的实际情况对不同的code执行不同的操作

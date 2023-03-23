@@ -9,7 +9,14 @@ export interface Goods {
   date?: Date;
   keyword?: Array<string>;
   category?: string;
-  info?: {};
+  info?: {
+    user?: string;
+    amount?: string;
+    gid?: number;
+    quick_ratio?: number;
+    trading?: string;
+    origin?: string;
+  };
   created_date: Date;
   source: string;
   pic_urls?: Array<string>;
@@ -36,4 +43,5 @@ export const GoodsColumnsType = {
   datetime: [GoodsColumns.DATE, GoodsColumns.CREATED_DATE],
   number: [GoodsColumns.ID],
   boolean: [],
+  select: {},
 };

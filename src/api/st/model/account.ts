@@ -52,4 +52,5 @@ export const AccountColumnsType = {
   datetime: [AccountColumns.INTIME],
   number: [AccountColumns.ID, AccountColumns.HOST_ID],
   boolean: [AccountColumns.USEFUL],
+  select: {},
 };

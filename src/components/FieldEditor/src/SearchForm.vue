@@ -50,7 +50,7 @@
 </script>
 <script lang="ts" setup>
   import { ref, toRefs } from 'vue';
-  import { SearchBase, BaseOptions, OrderArray, Field } from '/@/api/st/model/base';
+  import { Search, BaseOptions, OrderArray, Field } from '/@/api/st/model/base';
   import { FieldList } from '/@/components/FieldEditor';
   import { v4 as uuid4 } from 'uuid';
   import { useI18n } from '/@/hooks/web/useI18n';
@@ -58,7 +58,7 @@
 
   const props = defineProps({
     data: {
-      type: Object as PropType<SearchBase<any>>,
+      type: Object as PropType<Search<any>>,
       required: true,
     },
     options: {
@@ -91,6 +91,9 @@
   };
 
   const addOption = (obj: Array<Field<any>>) => {
+    if (obj.length == 0) {
+      return;
+    }
     delete obj[0].bop;
     obj.forEach((value: Field<any>) => {
       if (!value.uuid) {

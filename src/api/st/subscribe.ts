@@ -1,13 +1,13 @@
 import { defHttp } from '/@/utils/http/axios';
-import { SearchBase, WebResponse } from './model/base';
+import { Search, WebResponse } from './model/base';
 import { SubscribeColumns, Subscribe, SubscribeCreate } from './model/subscribe';
 
 import { ErrorMessageMode } from '/#/axios';
 
 enum Api {
-  SEARCH = '/api/subscribe/',
-  CREATE = '/api/subscribe/create',
-  DELETE = '/api/subscribe/delete',
+  SEARCH = '/subscribe/',
+  CREATE = '/subscribe/create',
+  DELETE = '/subscribe/delete',
 }
 
 export function getSubscribeApi(mode: ErrorMessageMode = 'modal') {
@@ -22,7 +22,7 @@ export function getSubscribeApi(mode: ErrorMessageMode = 'modal') {
 }
 
 export function deleteSubscribeApi(
-  data: SearchBase<SubscribeColumns>,
+  data: Search<SubscribeColumns>,
   mode: ErrorMessageMode = 'modal',
 ) {
   return defHttp.post<WebResponse<boolean>>(

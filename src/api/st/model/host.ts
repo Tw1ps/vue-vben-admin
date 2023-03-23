@@ -26,18 +26,6 @@ export enum HostColumnsUpdate {
   EXT = 'ext',
 }
 
-export enum HostRecord {
-  RECORD = 0,
-  ONLY_PULL = 1,
-  ONLY_RECORD = 2,
-  CENSOR = 3,
-}
-
-export enum HostType {
-  PRIVATE = 0,
-  PUBLIC = 1,
-}
-
 export const HostColumnsArray = createLabelArray(HostColumns);
 export const HostColumnsUpdateArray = createLabelArray(HostColumnsUpdate);
 

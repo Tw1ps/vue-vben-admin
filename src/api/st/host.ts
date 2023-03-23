@@ -1,17 +1,17 @@
 import { defHttp } from '/@/utils/http/axios';
-import { Field, SearchBase, WebResponse } from './model/base';
+import { Field, Search, WebResponse } from './model/base';
 import { HostColumns, Host, HostCreate, HostColumnsUpdate } from './model/host';
 
 import { ErrorMessageMode } from '/#/axios';
 
 enum Api {
-  SEARCH = '/api/host/',
-  CREATE = '/api/host/create',
-  DELETE = '/api/host/delete',
-  UPDATE = '/api/host/update',
+  SEARCH = '/host/',
+  CREATE = '/host/create',
+  DELETE = '/host/delete',
+  UPDATE = '/host/update',
 }
 
-export function getHostApi(data: SearchBase<HostColumns>, mode: ErrorMessageMode = 'modal') {
+export function getHostApi(data: Search<HostColumns>, mode: ErrorMessageMode = 'modal') {
   return defHttp.post<WebResponse<Array<Host>>>(
     {
       url: Api.SEARCH,
@@ -23,7 +23,7 @@ export function getHostApi(data: SearchBase<HostColumns>, mode: ErrorMessageMode
   );
 }
 
-export function deleteHostApi(data: SearchBase<HostColumns>, mode: ErrorMessageMode = 'modal') {
+export function deleteHostApi(data: Search<HostColumns>, mode: ErrorMessageMode = 'modal') {
   return defHttp.post<WebResponse<boolean>>(
     {
       url: Api.DELETE,
@@ -36,7 +36,7 @@ export function deleteHostApi(data: SearchBase<HostColumns>, mode: ErrorMessageM
 }
 
 export function updateHostApi(
-  data: { keyword: SearchBase<HostColumns>; new_values: Array<Field<HostColumnsUpdate>> },
+  data: { keyword: Search<HostColumns>; new_values: Array<Field<HostColumnsUpdate>> },
   mode: ErrorMessageMode = 'modal',
 ) {
   return defHttp.post<WebResponse<boolean>>(

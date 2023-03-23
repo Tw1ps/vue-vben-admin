@@ -1,17 +1,17 @@
 import { defHttp } from '/@/utils/http/axios';
-import { Field, SearchBase, WebResponse } from './model/base';
+import { Field, Search, WebResponse } from './model/base';
 import { LicenseColumns, License, LicenseCreate, LicenseColumnsUpdate } from './model/license';
 
 import { ErrorMessageMode } from '/#/axios';
 
 enum Api {
-  SEARCH = '/api/license/',
-  CREATE = '/api/license/create',
-  DELETE = '/api/license/delete',
-  UPDATE = '/api/license/update',
+  SEARCH = '/license/',
+  CREATE = '/license/create',
+  DELETE = '/license/delete',
+  UPDATE = '/license/update',
 }
 
-export function getLicenseApi(data: SearchBase<LicenseColumns>, mode: ErrorMessageMode = 'modal') {
+export function getLicenseApi(data: Search<LicenseColumns>, mode: ErrorMessageMode = 'modal') {
   return defHttp.post<WebResponse<Array<License>>>(
     {
       url: Api.SEARCH,
@@ -23,10 +23,7 @@ export function getLicenseApi(data: SearchBase<LicenseColumns>, mode: ErrorMessa
   );
 }
 
-export function deleteLicenseApi(
-  data: SearchBase<LicenseColumns>,
-  mode: ErrorMessageMode = 'modal',
-) {
+export function deleteLicenseApi(data: Search<LicenseColumns>, mode: ErrorMessageMode = 'modal') {
   return defHttp.post<WebResponse<boolean>>(
     {
       url: Api.DELETE,
@@ -39,7 +36,7 @@ export function deleteLicenseApi(
 }
 
 export function updateLicenseApi(
-  data: { keyword: SearchBase<LicenseColumns>; new_values: Array<Field<LicenseColumnsUpdate>> },
+  data: { keyword: Search<LicenseColumns>; new_values: Array<Field<LicenseColumnsUpdate>> },
   mode: ErrorMessageMode = 'modal',
 ) {
   return defHttp.post<WebResponse<boolean>>(

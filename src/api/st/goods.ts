@@ -1,15 +1,15 @@
 import { defHttp } from '/@/utils/http/axios';
-import { SearchBase, WebResponse } from './model/base';
+import { Search, WebResponse } from './model/base';
 import { GoodsColumns, Goods } from './model/goods';
 
 import { ErrorMessageMode } from '/#/axios';
 
 enum Api {
-  SEARCH = '/api/goods/',
+  SEARCH = '/goods/',
 }
 
-export function getGoodsApi(data: SearchBase<GoodsColumns>, mode: ErrorMessageMode = 'modal') {
-  return defHttp.post<WebResponse<Array<Goods>>>(
+export const getGoodsApi = (data: Search<GoodsColumns>, mode: ErrorMessageMode = 'modal') =>
+  defHttp.post<WebResponse<Array<Goods>>>(
     {
       url: Api.SEARCH,
       data,
@@ -18,4 +18,14 @@ export function getGoodsApi(data: SearchBase<GoodsColumns>, mode: ErrorMessageMo
       errorMessageMode: mode,
     },
   );
-}
+// export function getGoodsApi(data: Search<GoodsColumns>, mode: ErrorMessageMode = 'modal') {
+//   return defHttp.post<WebResponse<Array<Goods>>>(
+//     {
+//       url: Api.SEARCH,
+//       data,
+//     },
+//     {
+//       errorMessageMode: mode,
+//     },
+//   );
+// }

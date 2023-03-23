@@ -1,6 +1,7 @@
 export default {
   simple: {
     filter_criteria: '筛选条件',
+    data_total: '数据总数',
   },
   base: {
     add: '添加',
@@ -13,6 +14,14 @@ export default {
     offset: '偏移量',
     limit: '限制量',
     order_field: '排序字段',
+    action: '操作',
+    search_bar: '搜索栏',
+    advanced_search: '高级搜索',
+    search: '搜索',
+    reset: '重置',
+    change_mode: '切换模式',
+    detail: '详情',
+    pull: '推送',
   },
   op: {
     true: '真',
@@ -96,7 +105,7 @@ export default {
     intro: '内容',
     keyword: '关键词',
     category: '分类',
-    source: '来源',
+    source: '数据源',
     pic_urls: '图片链接',
     watch_id: '监测ID',
     user_id: '用户ID',
@@ -117,4 +126,13 @@ export default {
     bot_id: '机器人ID',
     at_user: '@用户',
   },
+  info: {
+    user: '发布者',
+    amount: '数据量',
+    gid: '交易编号',
+    quick_ratio: '相似度',
+    trading: '交易状态',
+    origin: '数据来源',
+  },
+  page: { goods: '数据页', censor: '审查页' },
 };

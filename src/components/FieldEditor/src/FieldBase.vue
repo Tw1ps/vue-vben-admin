@@ -67,7 +67,7 @@
         v-if="options.columnsType!.datetime!.indexOf(dataLocal.key) > -1"
         v-model:value="dataLocal.value"
         :bordered="false"
-        valueFormat="YYYY-MM-DDTHH:mm:ssZ[Z]"
+        valueFormat="YYYY-MM-DDTHH:mm:ss"
         show-time
       />
       <a-space v-else-if="options.columnsType!.number!.indexOf(dataLocal.key) > -1" class="w-auto">
@@ -247,7 +247,7 @@
   });
 
   const dataLocal = ref<Field<any>>(props.data);
-  const isPhone = ref(false);
+  const isPhone = ref<Boolean>(props.isPhone);
 
   const show = ref({
     add: false,

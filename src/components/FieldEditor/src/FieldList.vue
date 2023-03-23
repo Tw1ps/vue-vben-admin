@@ -1,6 +1,6 @@
 <template>
   <div :key="dt.uuid" v-for="dt in dataLocal">
-    <FieldBase :data="dt" :options="optionsNext" v-if="!dt.fields" />
+    <FieldBase :data="dt" :options="optionsNext" :is-phone="isPhone" v-if="!dt.fields" />
     <a-card
       :hoverable="true"
       :bordered="false"
@@ -148,10 +148,11 @@
 
   const dataLocal = ref<Array<FieldExt>>(props.data);
   const show = ref(props.show);
-
   const isPhone = navigator.userAgent.match(
     /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i,
-  );
+  )
+    ? true
+    : false;
 
   const addFirst = () => {
     dataLocal.value.push({ uuid: uuid4() });

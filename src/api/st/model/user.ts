@@ -1,17 +1,14 @@
 import { createLabelArray } from './base';
 
 export interface UserCreate {
-  username: string;
-  nickname: string;
-  email: string;
-  note: string;
-  license: string;
-  password: string;
-}
-
-export interface AdvancedUserCreate extends UserCreate {
-  rank: number;
-  active: boolean;
+  username: string | undefined;
+  nickname: string | undefined;
+  email: string | undefined;
+  note: string | undefined;
+  license: string | undefined;
+  password: string | undefined;
+  rank: number | undefined;
+  active: boolean | undefined;
 }
 
 export interface User extends UserCreate {
@@ -29,7 +26,6 @@ export enum UserColumns {
   USERNAME = 'username',
   NICKNAME = 'nickname',
   EMAIL = 'email',
-  PASSWORD = 'password',
   ACTIVE = 'active',
   NOTE = 'note',
   RANK = 'rank',
@@ -46,22 +42,11 @@ export enum UserColumnsUpdate {
   PASSWORD = 'password',
   ACTIVE = 'active',
   NOTE = 'note',
-}
-
-export enum AdvancedUserColumnsUpdate {
-  USERNAME = 'username',
-  NICKNAME = 'nickname',
-  EMAIL = 'email',
-  PASSWORD = 'password',
-  ACTIVE = 'active',
-  NOTE = 'note',
   RANK = 'rank',
-  LICENSE = 'license',
 }
 
 export const UserColumnsArray = createLabelArray(UserColumns);
 export const UserColumnsUpdateArray = createLabelArray(UserColumnsUpdate);
-export const AdvancedUserColumnsUpdateArray = createLabelArray(AdvancedUserColumnsUpdate);
 
 export const UserColumnsType = {
   datetime: [

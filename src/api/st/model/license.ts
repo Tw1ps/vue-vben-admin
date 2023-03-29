@@ -1,11 +1,11 @@
 import { createLabelArray } from './base';
 
 export interface LicenseCreate {
-  authorized: string;
+  authorized: string | undefined;
   active: boolean;
   rank: number;
   max_members: number;
-  validity: Date;
+  validity: Date | string;
 }
 
 export interface License extends LicenseCreate {

@@ -1,15 +1,15 @@
 import { createLabelArray } from './base';
 
 export interface BotCreate {
-  name: string;
-  apikey: string;
+  name: string | undefined;
+  apikey: string | undefined;
   security: {};
   ktype: BotType;
   provider: BotProvider;
   active: boolean;
   service_rank: number;
   receive_broadcast: boolean;
-  note: string;
+  note: string | undefined;
   at_user: Array<string>;
 }
 
@@ -22,7 +22,7 @@ export interface Bot extends BotCreate {
   provider: BotProvider;
   active: boolean;
   service_rank: number;
-  subscribe: Array<{ id: number; name: string; note: string }>;
+  subscribe: Array<{ id: number; name: string; note: string; filtr: boolean }>;
   user_id: number;
   username: string;
 }
@@ -92,10 +92,13 @@ export enum BotType {
 export const BotColumnsArray = createLabelArray(BotColumns);
 export const BotColumnsNativeArray = createLabelArray(BotColumnsNative);
 export const BotColumnsUpdateArray = createLabelArray(BotColumnsUpdate);
+export const BotTypeArray = createLabelArray(BotType);
+export const BotProviderArray = createLabelArray(BotProvider);
 
 export const BotColumnsType = {
   datetime: [],
   number: [BotColumns.ID, BotColumns.SERVICE_RANK, BotColumns.USER_ID],
   boolean: [BotColumns.ACTIVE, BotColumns.RECEIVE_BROADCAST],
   select: { provider: BotProvider, ktype: BotType },
+  array: [BotColumns.AT_USER],
 };

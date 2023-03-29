@@ -1,16 +1,16 @@
 import { createLabelArray } from './base';
 
 export interface WatchCreate {
-  path: string;
+  path: string | undefined;
   filtr: boolean;
   active: boolean;
-  ktype: WatchType;
-  record: WatchRecord;
-  page_param?: string;
-  page_start?: number;
-  page_end?: number;
-  note?: string;
-  ext?: {};
+  ktype: WatchType | number;
+  record: WatchRecord | number;
+  page_param?: string | undefined;
+  page_start?: number | undefined;
+  page_end?: number | undefined;
+  note?: string | undefined;
+  ext?: {} | undefined;
 }
 
 export interface Watch extends WatchCreate {
@@ -20,6 +20,7 @@ export interface Watch extends WatchCreate {
   hostname?: string;
   bot_name?: string;
   bot_id: number;
+  user_id: number;
 }
 
 export enum WatchColumns {
@@ -59,7 +60,7 @@ export enum WatchColumnsNative {
 }
 
 export enum WatchColumnsUpdate {
-  FLITR = 'filtr',
+  FILTR = 'filtr',
   ACTIVE = 'active',
   KTYPE = 'ktype',
   RECORD = 'record',
@@ -85,6 +86,8 @@ export enum WatchType {
 export const WatchColumnsArray = createLabelArray(WatchColumns);
 export const WatchColumnsNativeArray = createLabelArray(WatchColumnsNative);
 export const WatchColumnsUpdateArray = createLabelArray(WatchColumnsUpdate);
+export const WatchRecordArray = createLabelArray(WatchRecord);
+export const WatchTypeArray = createLabelArray(WatchType);
 
 export const WatchColumnsType = {
   datetime: [],
@@ -93,7 +96,6 @@ export const WatchColumnsType = {
     WatchColumns.BOT_ID,
     WatchColumns.HOST_ID,
     WatchColumns.PAGE_END,
-    WatchColumns.PAGE_PARAM,
     WatchColumns.PAGE_START,
     WatchColumns.USER_ID,
   ],

@@ -11,7 +11,7 @@ enum Api {
 }
 
 export function getSubscribeApi(mode: ErrorMessageMode = 'modal') {
-  return defHttp.post<WebResponse<Array<Subscribe>>>(
+  return defHttp.post<WebResponse<Array<{ id: number; name: string; note: string }>>>(
     {
       url: Api.SEARCH,
     },

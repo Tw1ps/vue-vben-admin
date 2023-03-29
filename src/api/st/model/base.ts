@@ -1,7 +1,30 @@
+function enum2arr(valueEnum: any[] | Record<string, any>) {
+  let values = Array.isArray(valueEnum) ? valueEnum : Object.values(valueEnum);
+  // 如果 enum 值为 number 类型，ts 生成的 js 对象会同时包含枚举的名称，针对该情形需提出枚举名称
+  const hasNum = values.some((v) => typeof v === 'number');
+  if (hasNum) {
+    values = values.filter((v) => {
+      if (typeof v != 'number') {
+        return true;
+      }
+    });
+  } else {
+    return null;
+  }
+  return values;
+}
+
 export function createLabelArray(src: {}) {
   const tmp = Array<{ label: string; value: any }>();
-  for (const k in src) {
-    tmp.push({ label: k, value: src[k] });
+  const tmp2 = enum2arr(src);
+  if (tmp2) {
+    for (const k in tmp2) {
+      tmp.push({ label: src[k], value: parseInt(k) });
+    }
+  } else {
+    for (const k in src) {
+      tmp.push({ label: k, value: src[k] });
+    }
   }
   return tmp;
 }
@@ -13,8 +36,8 @@ export enum Operator {
   LE = '<=',
   GT = '>',
   GE = '>=',
-  // IN = 'IN',
-  // NOT_IN = 'NOT IN',
+  IN = 'IN',
+  NOT_IN = 'NOT IN',
   LIKE = 'LIKE',
   NOT_LIKE = 'NOT LIKE',
   IS = 'IS',
@@ -44,7 +67,7 @@ export interface Field<T> {
   uuid?: string;
   bop?: Bop;
   key?: T;
-  operator?: Operator;
+  operator?: Operator | string;
   value?: any;
   fields?: Field<T>[];
 }
@@ -69,9 +92,10 @@ export interface ColumnsType {
   number?: Array<string>;
   boolean?: Array<string>;
   select: {};
+  array?: Array<string>;
 }
 
 export interface BaseOptions {
-  columns: Array<{ label: String; value: String }>;
+  columns: Array<{ label: string; value: string }>;
   columnsType?: ColumnsType;
 }

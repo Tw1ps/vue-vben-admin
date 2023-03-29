@@ -1,20 +1,20 @@
 <template>
   <a-form :model="data" layout="vertical">
     <div class="grid lg:grid-cols-2 sm:grid-cols-1 p-4">
-      <a-form-item :label="t('st.base.offset')" name="offset">
+      <a-form-item :label="t('st.base.offset')" name="offset" v-if="showOffset">
         <a-input-number v-model:value="offset" :min="0" placeholder="number" :defaultValue="0" />
       </a-form-item>
-      <a-form-item :label="t('st.base.limit')" name="limit">
+      <a-form-item :label="t('st.base.limit')" name="limit" v-if="showOffset">
         <a-input-number v-model:value="limit" :min="-1" placeholder="number" :defaultValue="100" />
       </a-form-item>
-      <a-form-item :label="t('st.base.order_field')" name="order_field">
+      <a-form-item :label="t('st.base.order_field')" name="order_field" v-if="showOrder">
         <a-select ref="select" v-model:value="order_field" allowClear>
           <SelectOption :value="itm.value" :key="itm.label" v-for="itm in options.columns">{{
             t('st.columns.' + itm.label.toLowerCase())
           }}</SelectOption>
         </a-select>
       </a-form-item>
-      <a-form-item :label="t('st.base.order')" name="order">
+      <a-form-item :label="t('st.base.order')" name="order" v-if="showOrder">
         <a-select ref="select" v-model:value="order" allowClear>
           <SelectOption :value="itm.value" :key="itm.label" v-for="itm in OrderArray">
             {{ t('st.base.' + itm.label.toLowerCase()) }}
@@ -22,7 +22,12 @@
         </a-select>
       </a-form-item>
     </div>
-    <a-card size="small" :title="t('st.simple.filter_criteria')" class="grid grid-cols-1">
+    <a-card
+      size="small"
+      :title="t('st.simple.filter_criteria')"
+      class="grid grid-cols-1"
+      v-if="showFields"
+    >
       <FieldList :data="fields!" :options="options" v-if="!jsonMode" />
       <CodeEditor v-model:value="jsonData" :mode="modeValue" v-if="jsonMode" />
       <template #extra
@@ -73,6 +78,18 @@
           jsonData: '[]',
         };
       },
+    },
+    showOffset: {
+      type: Boolean,
+      default: true,
+    },
+    showOrder: {
+      type: Boolean,
+      default: true,
+    },
+    showFields: {
+      type: Boolean,
+      default: true,
     },
   });
 

@@ -32,6 +32,42 @@ const datas: AppRouteModule = {
         title: t('st.page.censor'),
       },
     },
+    {
+      path: 'license',
+      name: 'License',
+      component: () => import('/@/views/st/license/index.vue'),
+      meta: {
+        // affix: true,
+        title: t('st.page.license'),
+      },
+    },
+    {
+      path: 'user',
+      name: 'User',
+      component: () => import('/@/views/st/user/index.vue'),
+      meta: {
+        // affix: true,
+        title: t('st.page.user'),
+      },
+    },
+    {
+      path: 'bot',
+      name: 'Bot',
+      component: () => import('/@/views/st/bot/index.vue'),
+      meta: {
+        // affix: true,
+        title: t('st.page.bot'),
+      },
+    },
+    {
+      path: 'watch',
+      name: 'Watch',
+      component: () => import('/@/views/st/watch/index.vue'),
+      meta: {
+        // affix: true,
+        title: t('st.page.watch'),
+      },
+    },
   ],
 };
 

@@ -7,71 +7,36 @@
     @mouseleave="
       () => {
         show.menu = false;
-        show.add = false;
-        show.addSub = false;
         show.clean = false;
         show.del = false;
       }
     "
   >
     <a-input-group size="small">
-      <a-dropdown
-        :trigger="['click']"
-        class="p-1 hover:underline"
-        v-if="dataLocal.bop && !options.noOperator"
-      >
-        <a class="ant-dropdown-link" @click.prevent>
-          {{ t('st.op.' + dataLocal.bop.toLowerCase()) }}
-        </a>
-        <template #overlay>
-          <a-menu>
-            <a-menu-item :key="k" v-for="k in BopArray">
-              <a @click="dataLocal.bop = k.value">{{ t('st.op.' + k.label.toLowerCase()) }}</a>
-            </a-menu-item>
-          </a-menu>
-        </template>
-      </a-dropdown>
-      <a-dropdown :trigger="['click']" class="p-1 hover:underline">
-        <a class="ant-dropdown-link" @click.prevent>
-          {{ dataLocal.key ? t('st.columns.' + dataLocal.key.toLowerCase()) : '_?_' }}
-        </a>
-        <template #overlay>
-          <a-menu>
-            <a-menu-item :key="k.value" v-for="k in options.columns">
-              <a @click="dataLocal.key = k.value">{{ t('st.columns.' + k.label.toLowerCase()) }}</a>
-            </a-menu-item>
-          </a-menu>
-        </template>
-      </a-dropdown>
-      <a-dropdown
-        :trigger="['click']"
-        class="p-1 hover:underline"
-        v-if="dataLocal.key && !options.noOperator"
-      >
-        <a class="ant-dropdown-link" @click.prevent>
-          {{
-            dataLocal.operator
-              ? t('st.op.' + dataLocal.operator.toLowerCase().replace(' ', '_'))
-              : '_?_'
-          }}
-        </a>
-        <template #overlay>
-          <a-menu>
-            <a-menu-item :key="k.label" v-for="k in OperatorArray">
-              <a @click="dataLocal.operator = k.value">{{ t('st.op.' + k.label.toLowerCase()) }}</a>
-            </a-menu-item>
-          </a-menu>
-        </template>
-      </a-dropdown>
-      <a-space v-if="dataLocal.operator">
-        <a-select
+      <a-space>
+        <a-dropdown :trigger="['click']" class="p-1 hover:underline">
+          <a class="ant-dropdown-link" @click.prevent>
+            {{ dataLocal.key ? t('st.columns.' + dataLocal.key.toLowerCase()) : '_?_' }}
+          </a>
+          <template #overlay>
+            <a-menu>
+              <a-menu-item :key="k.value" v-for="k in getColumns()">
+                <a @click="dataLocal.key = k.value">{{
+                  t('st.columns.' + k.label.toLowerCase())
+                }}</a>
+              </a-menu-item>
+            </a-menu>
+          </template>
+        </a-dropdown>
+        <span>{{ dataLocal.key ? '=' : '' }}</span>
+        <a-input-password
           :bordered="false"
-          mode="tags"
           v-model:value="dataLocal.value"
-          v-if="dataLocal.operator == Operator.IN || dataLocal.operator == Operator.NOT_IN"
-          placeholder="array"
+          v-if="dataLocal.key == 'password'"
+          placeholder="password"
         />
         <a-date-picker
+          class="w-auto"
           v-else-if="options.columnsType!.datetime && options.columnsType!.datetime.indexOf(dataLocal.key) > -1"
           v-model:value="dataLocal.value"
           :bordered="false"
@@ -79,15 +44,24 @@
           show-time
         />
         <a-input-number
+          class="w-auto"
           v-else-if="options.columnsType!.number && options.columnsType!.number.indexOf(dataLocal.key) > -1"
           :bordered="false"
           v-model:value="dataLocal.value"
           :min="-1"
           placeholder="number"
         />
+        <a-select
+          class="w-auto"
+          v-else-if="options.columnsType!.array && options.columnsType!.array.indexOf(dataLocal.key) > -1"
+          :bordered="false"
+          mode="tags"
+          v-model:value="dataLocal.value"
+          placeholder="Array"
+        />
         <a-dropdown
           :trigger="['click']"
-          class="p-1 hover:underline"
+          class="hover:underline w-auto"
           v-else-if="options.columnsType!.boolean && options.columnsType!.boolean.indexOf(dataLocal.key) > -1"
         >
           <a class="ant-dropdown-link" @click.prevent>
@@ -106,7 +80,7 @@
         </a-dropdown>
         <a-dropdown
           :trigger="['click']"
-          class="p-1 hover:underline"
+          class="hover:underline w-auto"
           v-else-if="options.columnsType!.select && dataLocal.key in options.columnsType!.select"
         >
           <a class="ant-dropdown-link" @click.prevent>
@@ -134,65 +108,41 @@
         </a-dropdown>
         <a-input
           v-else-if="dataLocal.key"
-          class="transform translate-y-1.25 w-auto"
+          class="w-auto"
           :bordered="false"
           v-model:value="dataLocal.value"
           placeholder="string"
         />
+        <a-dropdown :trigger="['click']" v-if="isPhone">
+          <a class="ant-dropdown-link" @click.prevent>
+            <bars-outlined class="bg-blue-500" :style="{ fontSize: '16px', color: '#F0F8FF' }" />
+          </a>
+          <template #overlay>
+            <a-menu>
+              <a-menu-item>
+                <a @click="options.actions.del(dataLocal)"
+                  ><delete-outlined /> {{ t('st.base.delete') }}</a
+                >
+              </a-menu-item>
+              <a-menu-item v-if="data.value != null">
+                <a @click="dataLocal.value = null"><close-outlined /> {{ t('st.base.setNull') }}</a>
+              </a-menu-item>
+            </a-menu>
+          </template>
+        </a-dropdown>
+        <a
+          v-if="show.menu && !isPhone && data.value != null"
+          @click="dataLocal.value = null"
+          @mouseover="show.clean = true"
+          ><close-outlined /> <span v-if="show.clean">{{ t('st.base.setNull') }}</span></a
+        >
+        <a
+          v-if="show.menu && !isPhone"
+          @click="options.actions.del(dataLocal)"
+          @mouseover="show.del = true"
+          ><delete-outlined /> <span v-if="show.del">{{ t('st.base.delete') }}</span></a
+        >
       </a-space>
-      <a-dropdown :trigger="['click']" class="p-1" v-if="isPhone">
-        <a class="ant-dropdown-link" @click.prevent>
-          <bars-outlined class="bg-blue-500" :style="{ fontSize: '16px', color: '#F0F8FF' }" />
-        </a>
-        <template #overlay>
-          <a-menu>
-            <a-menu-item>
-              <a @click="options.actions.del(dataLocal)"
-                ><delete-outlined /> {{ t('st.base.delete') }}</a
-              >
-            </a-menu-item>
-            <a-menu-item v-if="data.value != null">
-              <a @click="dataLocal.value = null"><close-outlined /> {{ t('st.base.setNull') }}</a>
-            </a-menu-item>
-            <a-menu-item>
-              <a @click="options.actions.add(dataLocal)"
-                ><plus-outlined /> {{ t('st.base.add') }}</a
-              >
-            </a-menu-item>
-            <a-menu-item v-if="!options.noOperator">
-              <a @click="options.actions.addSub(dataLocal)">(+) {{ t('st.base.subSet') }}</a>
-            </a-menu-item>
-          </a-menu>
-        </template>
-      </a-dropdown>
-      <a
-        class="p-1"
-        v-if="show.menu && !isPhone"
-        @click="options.actions.add(dataLocal)"
-        @mouseover="show.add = true"
-        ><plus-outlined /> <span v-if="show.add">{{ t('st.base.add') }}</span></a
-      >
-      <a
-        class="p-1"
-        v-if="show.menu && !isPhone && !options.noOperator"
-        @click="options.actions.addSub(dataLocal)"
-        @mouseover="show.addSub = true"
-        >(+) <span v-if="show.addSub">{{ t('st.base.subSet') }}</span></a
-      >
-      <a
-        class="p-1"
-        v-if="show.menu && !isPhone && data.value != null"
-        @click="dataLocal.value = null"
-        @mouseover="show.clean = true"
-        ><close-outlined /> <span v-if="show.clean">{{ t('st.base.setNull') }}</span></a
-      >
-      <a
-        class="p-1"
-        v-if="show.menu && !isPhone"
-        @click="options.actions.del(dataLocal)"
-        @mouseover="show.del = true"
-        ><delete-outlined /> <span v-if="show.del">{{ t('st.base.delete') }}</span></a
-      >
     </a-input-group>
   </a-card>
 </template>
@@ -208,10 +158,11 @@
     Dropdown,
     InputGroup,
     InputNumber,
+    InputPassword,
     Space,
     Select,
   } from 'ant-design-vue';
-  import { BaseOptions } from '/@/api/st/model/base';
+  import { BaseOptions, createLabelArray } from '/@/api/st/model/base';
 
   export default defineComponent({
     components: {
@@ -223,6 +174,7 @@
       [Dropdown.name]: Dropdown,
       [InputGroup.name]: InputGroup,
       [InputNumber.name]: InputNumber,
+      [InputPassword.name]: InputPassword,
       [Space.name]: Space,
       [Select.name]: Select,
       [BarsOutlined.name]: BarsOutlined,
@@ -233,19 +185,16 @@
   });
 
   interface Actions {
-    add: Function;
-    addSub: Function;
     del: Function;
   }
 
   export interface Options extends BaseOptions {
-    noOperator?: boolean;
     actions: Actions;
   }
 </script>
 <script lang="ts" setup>
   import { PropType, ref } from 'vue';
-  import { Field, BopArray, OperatorArray, createLabelArray, Operator } from '/@/api/st/model/base';
+  import { Field } from '/@/api/st/model/base';
   import { useI18n } from '/@/hooks/web/useI18n';
   const { t } = useI18n();
 
@@ -263,15 +212,17 @@
       type: Boolean,
       default: false,
     },
+    getColumns: {
+      type: Function,
+      required: true,
+    },
   });
 
   const dataLocal = ref<Field<any>>(props.data);
   const isPhone = ref<Boolean>(props.isPhone);
 
   const show = ref({
-    add: false,
     del: false,
-    addSub: false,
     clean: false,
     menu: false,
   });

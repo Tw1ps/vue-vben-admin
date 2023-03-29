@@ -1,6 +1,12 @@
 import { defHttp } from '/@/utils/http/axios';
 import { Field, Search, WebResponse } from './model/base';
-import { WatchColumns, Watch, WatchCreate, WatchColumnsUpdate } from './model/watch';
+import {
+  WatchColumns,
+  Watch,
+  WatchCreate,
+  WatchColumnsUpdate,
+  WatchColumnsNative,
+} from './model/watch';
 
 import { ErrorMessageMode } from '/#/axios';
 
@@ -23,7 +29,7 @@ export function getWatchApi(data: Search<WatchColumns>, mode: ErrorMessageMode =
   );
 }
 
-export function deleteWatchApi(data: Search<WatchColumns>, mode: ErrorMessageMode = 'modal') {
+export function deleteWatchApi(data: Search<WatchColumnsNative>, mode: ErrorMessageMode = 'modal') {
   return defHttp.post<WebResponse<boolean>>(
     {
       url: Api.DELETE,

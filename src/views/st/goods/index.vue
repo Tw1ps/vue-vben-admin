@@ -1,5 +1,5 @@
 <template>
-  <PageWrapper contentFullHeight title="数据页" content="所有来源的数据都可在此处查询">
+  <PageWrapper contentFullHeight :title="t('st.page.goods')" :content="t('st.pageIntro.goods')">
     <div class="!my-2 w-full">
       <Card size="small" :bordered="false">
         <Collapse ghost>

@@ -326,7 +326,7 @@
     {
       title: t('st.columns.id'),
       dataIndex: 'id',
-      width: 120,
+      defaultHidden: true,
       sorter: true,
     },
     {
@@ -781,6 +781,9 @@
       pageSizeOptions: ['20', '40', '60', '80', '100'],
     },
     showIndexColumn: false,
+    tableSetting: {
+      redo: false,
+    },
     onChange: tableChangeHandle,
   });
 

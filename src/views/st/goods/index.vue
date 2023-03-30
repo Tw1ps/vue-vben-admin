@@ -141,6 +141,17 @@
               ></Card
             >
           </DescriptionsItem>
+          <DescriptionsItem :label="t('st.columns.tag')" v-if="showModalField!.tag?.length"
+            ><Card size="small" :bordered="false">
+              <Tag
+                class="p-1"
+                :color="getRandomColor()"
+                :key="k"
+                v-for="k in showModalField!.tag"
+                >{{ k }}</Tag
+              ></Card
+            >
+          </DescriptionsItem>
           <DescriptionsItem
             :label="t('st.columns.pic_urls')"
             v-if="showModalField!.pic_urls?.length"
@@ -149,7 +160,7 @@
             </Card>
           </DescriptionsItem>
         </Descriptions>
-        <CodeEditor v-model:value="showModalField!.intro" :readonly="true" :mode="MODE.HTML" />
+        <CodeEditor v-model:value="showModalField!.detail" :readonly="true" :mode="MODE.HTML" />
       </Card>
       <CodeEditor
         class="!my-4"
@@ -258,8 +269,8 @@
       align: 'left',
     },
     {
-      title: t('st.columns.intro'),
-      dataIndex: 'intro',
+      title: t('st.columns.detail'),
+      dataIndex: 'detail',
       width: 300,
       align: 'left',
     },
@@ -271,6 +282,11 @@
     {
       title: t('st.columns.keyword'),
       dataIndex: 'keyword',
+      width: 200,
+    },
+    {
+      title: t('st.columns.tag'),
+      dataIndex: 'tag',
       width: 200,
     },
     {
@@ -454,6 +470,9 @@
     pagination: pagination,
     showIndexColumn: false,
     onChange: change,
+    tableSetting: {
+      redo: false,
+    },
   });
 
   onMounted(async () => {

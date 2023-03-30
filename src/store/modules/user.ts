@@ -132,11 +132,16 @@ export const useUserStore = defineStore({
       const { rank } = userInfo;
 
       userInfo.roles = [];
+      if (rank == 0) {
+        userInfo.roles.push(RoleEnum.SU);
+      }
       if (rank <= 10) {
         userInfo.roles.push(RoleEnum.ADMIN);
-      } else if (rank <= 600) {
+      }
+      if (rank <= 600) {
         userInfo.roles.push(RoleEnum.SERVICE);
-      } else if (rank <= 1000) {
+      }
+      if (rank <= 1000) {
         userInfo.roles.push(RoleEnum.GENERAL);
       }
 

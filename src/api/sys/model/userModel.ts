@@ -4,6 +4,7 @@
 export interface LoginParams {
   username: string;
   password: string;
+  expires_minutes: number;
 }
 
 export interface RoleInfo {
@@ -23,7 +24,7 @@ export interface LoginResultModel {
  * @description: Get user information return value
  */
 export interface GetUserInfoModel {
-  id: number;
+  id: string;
   username: string;
   nickname?: string;
   email?: string;

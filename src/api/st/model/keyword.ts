@@ -1,15 +1,16 @@
 import { createLabelArray } from './base';
 
 export interface KeywordCreate {
-  keyword: string;
+  keyword: string | undefined;
   ktype: KeywordType;
-  note: string;
+  note: string | undefined;
 }
 
 export interface Keyword extends KeywordCreate {
   id: number;
   name: string;
   bot_id: number;
+  user_id: number;
 }
 
 export enum KeywordColumns {
@@ -45,6 +46,7 @@ export enum KeywordType {
 export const KeywordColumnsArray = createLabelArray(KeywordColumns);
 export const KeywordColumnsNativeArray = createLabelArray(KeywordColumnsNative);
 export const KeywordColumnsUpdateArray = createLabelArray(KeywordColumnsUpdate);
+export const KeywordTypeArray = createLabelArray(KeywordType);
 
 export const KeywordColumnsType = {
   datetime: [],

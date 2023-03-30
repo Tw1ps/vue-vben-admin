@@ -219,13 +219,20 @@
               ></Card
             >
           </DescriptionsItem>
+          <DescriptionsItem :label="t('st.columns.tag')" v-if="DetailData!.tag?.length"
+            ><Card size="small" :bordered="false">
+              <Tag class="p-1" :color="getRandomColor()" :key="k" v-for="k in DetailData!.tag">{{
+                k
+              }}</Tag></Card
+            >
+          </DescriptionsItem>
           <DescriptionsItem :label="t('st.columns.pic_urls')" v-if="DetailData!.pic_urls?.length"
             ><Card size="small" :bordered="false">
               <TableImg :size="200" class="w-full" :imgList="DetailData!.pic_urls" />
             </Card>
           </DescriptionsItem>
         </Descriptions>
-        <CodeEditor v-model:value="DetailData!.intro" :readonly="true" :mode="MODE.HTML" />
+        <CodeEditor v-model:value="DetailData!.detail" :readonly="true" :mode="MODE.HTML" />
       </Card>
       <CodeEditor
         class="!my-4"
@@ -362,8 +369,8 @@
       align: 'left',
     },
     {
-      title: t('st.columns.intro'),
-      dataIndex: 'intro',
+      title: t('st.columns.detail'),
+      dataIndex: 'detail',
       width: 300,
       align: 'left',
     },
@@ -375,6 +382,11 @@
     {
       title: t('st.columns.keyword'),
       dataIndex: 'keyword',
+      width: 200,
+    },
+    {
+      title: t('st.columns.tag'),
+      dataIndex: 'tag',
       width: 200,
     },
     {
@@ -682,6 +694,9 @@
     },
     showIndexColumn: false,
     onChange: tableChangeHandle,
+    tableSetting: {
+      redo: false,
+    },
   });
 
   onMounted(async () => {

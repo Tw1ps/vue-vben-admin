@@ -1,8 +1,8 @@
 import { createLabelArray } from './base';
 
 export interface AccountCreate {
-  usr: string;
-  pwd: string;
+  usr: string | undefined;
+  pwd: string | undefined;
   useful: boolean;
   info?: {};
 }

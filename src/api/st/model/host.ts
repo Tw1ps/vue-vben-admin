@@ -1,8 +1,8 @@
 import { createLabelArray } from './base';
 
 export interface HostCreate {
-  host: string;
-  hostname: string;
+  host: string | undefined;
+  hostname: string | undefined;
   rank: number;
   ext?: {};
 }

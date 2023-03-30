@@ -5,9 +5,10 @@ export interface Goods {
   url: string;
   unique_hash: string;
   title?: string;
-  intro?: string;
+  detail?: string;
   date?: Date;
   keyword?: Array<string>;
+  tag?: Array<string>;
   category?: string;
   info?: {
     user?: string;
@@ -27,9 +28,10 @@ export enum GoodsColumns {
   URL = 'url',
   UNIQUE_HASH = 'unique_hash',
   TITLE = 'title',
-  INTRO = 'intro',
+  DETAIL = 'detail',
   DATE = 'date',
   KEYWORD = 'keyword',
+  TAG = 'tag',
   CATEGORY = 'category',
   INFO = 'info',
   CREATED_DATE = 'created_date',

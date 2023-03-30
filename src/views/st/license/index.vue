@@ -716,6 +716,9 @@
     },
     showIndexColumn: false,
     onChange: tableChangeHandle,
+    tableSetting: {
+      redo: false,
+    },
   });
 
   onMounted(async () => {

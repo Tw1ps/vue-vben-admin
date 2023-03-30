@@ -10,7 +10,7 @@ import {
 
 import { ErrorMessageMode } from '/#/axios';
 
-enum Api {
+export enum Api {
   SEARCH = '/keyword/',
   CREATE = '/keyword/create',
   DELETE = '/keyword/delete',
@@ -68,6 +68,23 @@ export function createKeywordApi(
   return defHttp.post<WebResponse<Keyword>>(
     {
       url: Api.CREATE,
+      params,
+      data,
+    },
+    {
+      errorMessageMode: mode,
+    },
+  );
+}
+
+export function uploadKeywordApi(
+  params: { bot_id: number },
+  data: FormData,
+  mode: ErrorMessageMode = 'modal',
+) {
+  return defHttp.post<WebResponse<Keyword>>(
+    {
+      url: Api.UPLOAD,
       params,
       data,
     },

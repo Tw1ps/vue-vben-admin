@@ -1,5 +1,5 @@
 <template>
-  <PageWrapper contentFullHeight :title="t('st.page.bot')" :content="t('st.pageIntro.bot')">
+  <PageWrapper contentFullHeight :title="t('st.page.host')" :content="t('st.pageIntro.host')">
     <div class="!my-2 w-full">
       <Card size="small" :bordered="false">
         <Collapse ghost>
@@ -31,7 +31,11 @@
               </Space></Card
             >
           </CollapsePanel>
-          <CollapsePanel key="2" :header="t('st.base.tool') + t('st.base.bar')">
+          <CollapsePanel
+            key="2"
+            :header="t('st.base.tool') + t('st.base.bar')"
+            v-if="userInfo.rank <= 10"
+          >
             <Card size="small" class="text-right" :bordered="false"
               ><Space>
                 <a @click="showModalForCreate"><PlusSquareOutlined />{{ t('st.base.create') }}</a>
@@ -68,56 +72,9 @@
       <Card class="!my-2">
         <BasicTable @register="registerTable">
           <template #bodyCell="{ column, record, text }">
-            <template v-if="column.key === 'active'">
-              <Tag color="green" v-if="text">True</Tag>
-              <Tag color="red" v-else>False</Tag>
-            </template>
-            <template v-else-if="column.key === 'filtr'">
-              <Tag color="green" v-if="text">True</Tag>
-              <Tag color="red" v-else>False</Tag>
-            </template>
-            <template v-else-if="column.key === 'receive_broadcast'">
-              <Tag color="green" v-if="text">True</Tag>
-              <Tag color="red" v-else>False</Tag>
-            </template>
-            <template v-else-if="column.key === 'apikey'">
-              <Tag>{{ text }}</Tag>
-            </template>
-            <template v-else-if="column.key === 'at_user'">
-              <Tag :color="getRandomColor()" :key="u" v-for="u in text">{{ u }}</Tag>
-            </template>
-            <template v-else-if="column.key === 'subscribe'">
-              <Popover trigger="hover">
-                <template #content>
-                  <Tag :color="getRandomColor()" :key="u.id" v-for="u in text"
-                    >{{ u.id }}:{{ u.name }}</Tag
-                  >
-                </template>
-                <Tag :color="getRandomColor()" :key="u.id" v-for="u in text"
-                  >{{ u.id }}:{{ u.name }}</Tag
-                >
-              </Popover>
-            </template>
-            <template v-else-if="column.key === 'ktype'">
-              {{ t('st.enum.' + BotType[text].toLowerCase()) }}
-            </template>
-            <template v-else-if="column.key === 'provider'">
-              {{ t('st.enum.' + BotProvider[text].toLowerCase()) }}
-            </template>
-            <template v-else-if="column.key === 'security'">
-              <Tag v-if="text?.signature">{{ t('st.enum.signature') }}: {{ text.signature }}</Tag>
-              <Tag v-if="text?.text">{{ t('st.enum.text') }}: {{ text.text }}</Tag>
-            </template>
-            <template v-else-if="column.key === 'action'">
+            <template v-if="column.key === 'action'">
               <Space>
-                <a
-                  v-if="(userInfo.rank <= 10 || userInfo.id == record.user_id) && record.active"
-                  @click="showModalForSubscribe(record)"
-                  ><MessageOutlined />{{ t('st.columns.subscribe') }}</a
-                >
-                <a
-                  @click="updateOne(record.id)"
-                  v-if="userInfo.rank <= 10 || userInfo.id == record.user_id"
+                <a @click="updateOne(record.id)" v-if="userInfo.rank <= 10"
                   ><FormOutlined />{{ t('st.base.update') }}</a
                 >
                 <Popconfirm
@@ -126,16 +83,19 @@
                   cancel-text="No"
                   @confirm="deleteOne(record)"
                 >
-                  <a v-if="userInfo.rank <= 10 || userInfo.id == record.user_id"
-                    ><DeleteOutlined />{{ t('st.base.delete') }}</a
-                  >
+                  <a v-if="userInfo.rank <= 10"><DeleteOutlined />{{ t('st.base.delete') }}</a>
                 </Popconfirm>
+              </Space>
+            </template>
+            <template v-else-if="column.key === 'ext'">
+              <Space v-if="text">
+                <Tag :key="k" v-for="k in text">{{ k }}: {{ text[k] }}</Tag>
               </Space>
             </template>
           </template>
         </BasicTable>
       </Card>
-      <Card :title="t('st.base.usage')" :bordered="false">使用说明</Card>
+      <Card :title="t('st.base.usage')" :bordered="false">使用说明 </Card>
     </div>
     <Modal
       v-model:visible="visibleDeleteModal"
@@ -150,108 +110,6 @@
         :showOffset="false"
         :showOrder="false"
       />
-    </Modal>
-    <Modal
-      v-model:visible="visibleSubscribeModal"
-      class="w-auto h-auto"
-      width="1000px"
-      :footer="null"
-      :title="t('st.base.manager') + t('st.columns.subscribe')"
-    >
-      <Card size="small" :bordered="false">
-        当前操作机器人: {{ listener?.name }}
-        <Input
-          v-model:value="serviceFiltr"
-          :placeholder="t('st.columns.filtr') + t('st.columns.service')"
-          allowClear
-        />
-      </Card>
-      <div class="grid md:grid-cols-2 gap-4">
-        <Card
-          :title="t('st.columns.subscribed') + t('st.columns.service')"
-          size="small"
-          :bordered="true"
-        >
-          <List
-            item-layout="horizontal"
-            :data-source="listener?.subscribe ? listener?.subscribe : []"
-          >
-            <template #renderItem="{ item }">
-              <ListItem
-                v-if="
-                  (serviceFiltr &&
-                    item.name.toLowerCase().search(serviceFiltr.toLowerCase()) !== -1) ||
-                  (serviceFiltr &&
-                    item.note &&
-                    item.note.toLowerCase().search(serviceFiltr.toLowerCase()) !== -1) ||
-                  serviceFiltr == undefined ||
-                  serviceFiltr == ''
-                "
-              >
-                <template #actions>
-                  <a @click="delSubscribe(item.id)">{{
-                    t('st.base.cancel') + t('st.columns.subscribe')
-                  }}</a>
-                </template>
-                <ListItemMeta :description="item.note">
-                  <template #title>
-                    {{ item.name }}
-                  </template>
-                </ListItemMeta>
-                <Tooltip>
-                  <template #title>是否使用机器人关联的关键词组过滤消息</template>
-                  <Tag color="green" v-if="item.filtr">{{ t('st.columns.filtr') }}: True</Tag>
-                  <Tag color="red" v-else>{{ t('st.columns.filtr') }}: False</Tag>
-                </Tooltip>
-              </ListItem>
-            </template>
-          </List>
-        </Card>
-        <Card :title="t('st.columns.service')" size="small" :bordered="true">
-          <List item-layout="horizontal" :data-source="subscribeData">
-            <template #renderItem="{ item }">
-              <ListItem
-                v-if="
-                  ((serviceFiltr &&
-                    item.name.toLowerCase().search(serviceFiltr.toLowerCase()) !== -1) ||
-                    (serviceFiltr &&
-                      item.note &&
-                      item.note.toLowerCase().search(serviceFiltr.toLowerCase()) !== -1) ||
-                    serviceFiltr == undefined ||
-                    serviceFiltr == '') &&
-                  listenerSubscribe?.indexOf(item.id) < 0 &&
-                  item.id != listener!.id
-                "
-              >
-                <template #actions>
-                  <Dropdown :trigger="['click']">
-                    <a class="ant-dropdown-link" @click.prevent>
-                      {{ t('st.columns.subscribe') }}
-                    </a>
-                    <template #overlay>
-                      <Menu>
-                        <MenuItem key="1"
-                          ><a @click="addSubscribe(item, true)">使用关键词组过滤消息</a></MenuItem
-                        >
-                        <MenuItem key="2"
-                          ><a @click="addSubscribe(item, false)">{{
-                            t('st.columns.nofiltr')
-                          }}</a></MenuItem
-                        >
-                      </Menu>
-                    </template>
-                  </Dropdown>
-                </template>
-                <ListItemMeta :description="item.note">
-                  <template #title>
-                    {{ item.name }}
-                  </template>
-                </ListItemMeta>
-              </ListItem>
-            </template>
-          </List>
-        </Card>
-      </div>
     </Modal>
     <Modal
       v-model:visible="visibleUpdateModal"
@@ -319,69 +177,14 @@
     >
       <Card :bordered="false" size="small">
         <Form :label-col="{ span: 4 }" :wrapper-col="{ span: 14 }">
-          <FormItem :label="t('st.columns.name')" v-bind="validateInfos.name">
-            <Input v-model:value="createData.name" />
+          <FormItem :label="t('st.columns.host')" v-bind="validateInfos.host">
+            <Input :maxlength="255" v-model:value="createData.host" />
           </FormItem>
-          <FormItem :label="t('st.columns.name')" v-bind="validateInfos.apikey">
-            <Input v-model:value="createData.apikey" />
+          <FormItem :label="t('st.columns.hostname')" v-bind="validateInfos.hostname">
+            <Input :maxlength="31" v-model:value="createData.hostname" />
           </FormItem>
-          <FormItem :label="t('st.columns.security')">
-            <Tooltip>
-              <template #title>机器人推送消息的安全验证方式</template>
-              <InputGroup compact>
-                <Select v-model:value="secType">
-                  <SelectOption :value="BotSecurity[v]" :key="v" v-for="v in BotSecurity">
-                    {{ t('st.enum.' + v.toLowerCase()) }}
-                  </SelectOption>
-                </Select>
-                <Input
-                  style="width: 70%"
-                  v-model:value="createData.security.signature"
-                  v-if="secType == BotSecurity.SIGNATURE"
-                  allowClear
-                />
-                <Input
-                  style="width: 70%"
-                  v-model:value="createData.security.text"
-                  v-if="secType == BotSecurity.TEXT"
-                  allowClear
-                />
-              </InputGroup>
-            </Tooltip>
-          </FormItem>
-          <FormItem :label="t('st.columns.ktype')">
-            <Select v-model:value="createData.ktype">
-              <SelectOption :value="v.value" :key="v.label" v-for="v in BotTypeArray">
-                {{ t('st.enum.' + v.label.toLowerCase()) }}
-              </SelectOption>
-            </Select>
-          </FormItem>
-          <FormItem
-            :label="t('st.columns.service_rank')"
-            v-if="
-              createData.ktype == BotType.SERVICE || createData.ktype == BotType.PRIVATE_SERVICE
-            "
-          >
-            <InputNumber :min="0" v-model:value="createData.service_rank" />
-          </FormItem>
-          <FormItem :label="t('st.columns.provider')">
-            <Select v-model:value="createData.provider">
-              <SelectOption :value="v.value" :key="v.label" v-for="v in BotProviderArray">
-                {{ t('st.enum.' + v.label.toLowerCase()) }}
-              </SelectOption>
-            </Select>
-          </FormItem>
-          <FormItem :label="t('st.columns.note')">
-            <Input v-model:value="createData.note" allowClear />
-          </FormItem>
-          <FormItem :label="t('st.columns.at_user')">
-            <Select mode="tags" v-model:value="createData.at_user" />
-          </FormItem>
-          <FormItem :label="t('st.columns.active')">
-            <Switch v-model:checked="createData.active" />
-          </FormItem>
-          <FormItem :label="t('st.columns.receive_broadcast')">
-            <Switch v-model:checked="createData.receive_broadcast" />
+          <FormItem :label="t('st.columns.rank')">
+            <InputNumber :min="0" v-model:value="createData.rank" />
           </FormItem>
           <FormItem :wrapper-col="{ span: 14, offset: 4 }">
             <Space>
@@ -407,23 +210,11 @@
     Space,
     Popconfirm,
     Modal,
-    Tag,
     Form,
     FormItem,
     Input,
-    Switch,
-    Select,
-    SelectOption,
     InputNumber,
-    Tooltip,
-    Popover,
-    InputGroup,
-    List,
-    ListItem,
-    ListItemMeta,
-    Dropdown,
-    Menu,
-    MenuItem,
+    Tag,
   } from 'ant-design-vue';
   import {
     SearchOutlined,
@@ -433,13 +224,11 @@
     PlusSquareOutlined,
     FormOutlined,
     SendOutlined,
-    MessageOutlined,
   } from '@ant-design/icons-vue';
   import { CodeEditor, MODE } from '/@/components/CodeEditor';
-  import { SubscribeColumns } from '/@/api/st/model/subscribe';
 
   export default defineComponent({
-    name: 'Bot',
+    name: 'Host',
     components: {
       BasicTable,
       PageWrapper,
@@ -451,22 +240,11 @@
       CodeEditor,
       Modal,
       SearchForm,
-      Tag,
       Form,
       FormItem,
       Input,
-      Switch,
-      Select,
       InputNumber,
-      Tooltip,
-      Popover,
-      InputGroup,
-      List,
-      ListItem,
-      ListItemMeta,
-      Dropdown,
-      Menu,
-      MenuItem,
+      Tag,
     },
   });
 </script>
@@ -475,22 +253,15 @@
   import { FieldList, SearchForm, UpdateFieldList } from '/@/components/FieldEditor';
   import { Search, Field, Operator } from '/@/api/st/model/base';
   import {
-    Bot,
-    BotColumns,
-    BotColumnsArray,
-    BotColumnsType,
-    BotCreate,
-    BotColumnsUpdate,
-    BotColumnsUpdateArray,
-    BotColumnsNative,
-    BotType,
-    BotProvider,
-    BotSecurity,
-    BotProviderArray,
-    BotTypeArray,
-  } from '/@/api/st/model/bot';
-  import { getBotApi, deleteBotApi, updateBotApi, createBotApi } from '/@/api/st/bot';
-  import { getSubscribeApi, createSubscribeApi, deleteSubscribeApi } from '/@/api/st/subscribe';
+    Host,
+    HostColumns,
+    HostColumnsArray,
+    HostColumnsType,
+    HostCreate,
+    HostColumnsUpdate,
+    HostColumnsUpdateArray,
+  } from '/@/api/st/model/host';
+  import { getHostApi, deleteHostApi, updateHostApi, createHostApi } from '/@/api/st/host';
   import { v4 as uuid4 } from 'uuid';
   import { useUserStore } from '/@/store/modules/user';
   import { useI18n } from '/@/hooks/web/useI18n';
@@ -501,73 +272,30 @@
       title: t('st.columns.id'),
       dataIndex: 'id',
       sorter: true,
+      width: 120,
     },
     {
-      title: t('st.columns.name'),
-      dataIndex: 'name',
+      title: t('st.columns.host'),
+      dataIndex: 'host',
       align: 'left',
-      width: 300,
+      width: 600,
     },
     {
-      title: t('st.columns.apikey'),
-      dataIndex: 'apikey',
-      width: 500,
-      defaultHidden: true,
-    },
-    {
-      title: t('st.columns.security'),
-      dataIndex: 'security',
-      width: 500,
-      defaultHidden: true,
-    },
-    {
-      title: t('st.columns.ktype'),
-      dataIndex: 'ktype',
-    },
-    {
-      title: t('st.columns.provider'),
-      dataIndex: 'provider',
-    },
-    {
-      title: t('st.columns.service_rank'),
-      dataIndex: 'service_rank',
-      sorter: true,
-      width: 120,
-    },
-    {
-      title: t('st.columns.active'),
-      dataIndex: 'active',
-      width: 120,
-    },
-    {
-      title: t('st.columns.receive_broadcast'),
-      dataIndex: 'receive_broadcast',
-      width: 120,
-    },
-    {
-      title: t('st.columns.note'),
-      dataIndex: 'note',
+      title: t('st.columns.hostname'),
+      dataIndex: 'hostname',
       align: 'left',
-      width: 300,
     },
     {
-      title: t('st.columns.at_user'),
-      dataIndex: 'at_user',
-    },
-    {
-      title: t('st.columns.subscribe'),
-      dataIndex: 'subscribe',
-      width: 300,
-    },
-    {
-      title: t('st.columns.user_id'),
-      dataIndex: 'user_id',
+      title: t('st.columns.rank'),
+      dataIndex: 'rank',
+      width: 120,
       sorter: true,
-      defaultHidden: true,
     },
     {
-      title: t('st.columns.username'),
-      dataIndex: 'username',
+      title: t('st.columns.ext'),
+      dataIndex: 'ext',
+      defaultHidden: true,
+      width: 600,
     },
     {
       title: t('st.base.action'),
@@ -577,12 +305,12 @@
     },
   ]; // 数据字段定义
   const columnsOptions = {
-    columns: BotColumnsArray,
-    columnsType: BotColumnsType,
+    columns: HostColumnsArray,
+    columnsType: HostColumnsType,
   }; // 字段设置
 
   // 获取数据请求
-  const getSourceData = async (v: Search<BotColumns>) => {
+  const getSourceData = async (v: Search<HostColumns>) => {
     if (jsonOptionsForSearch.jsonMode) {
       try {
         requestDataForSearch.fields = JSON.parse(jsonOptionsForSearch.jsonData);
@@ -594,7 +322,7 @@
     }
     setLoading(true);
     try {
-      const { data, total } = await getBotApi(v);
+      const { data, total } = await getHostApi(v);
       if (data) {
         setTableData(data);
       }
@@ -630,7 +358,7 @@
   const showModalForUpdate = () => {
     visibleUpdateModal.value = !visibleUpdateModal.value;
   }; // 展示更新框开关函数
-  let requestDataForUpdate: Search<BotColumns> = reactive({
+  let requestDataForUpdate: Search<HostColumns> = reactive({
     offset: 0,
     limit: -1,
     order: null,
@@ -645,17 +373,17 @@
     jsonMode: false,
     jsonData: '[]',
   }); // 更新框JSON设置
-  const updateFields = ref<Array<Field<BotColumnsUpdate>>>([]);
+  const updateFields = ref<Array<Field<HostColumnsUpdate>>>([]);
   const columnsOptionsForUpdate = {
-    columns: BotColumnsUpdateArray,
-    columnsType: BotColumnsType,
+    columns: HostColumnsUpdateArray,
+    columnsType: HostColumnsType,
   }; // 字段设置
 
   const updateOne = (id: number) => {
     // clearUpdateCondition();
     requestDataForUpdate.fields.splice(0, requestDataForUpdate.fields.length, {
       uuid: uuid4(),
-      key: BotColumns.ID,
+      key: HostColumns.ID,
       operator: Operator.EQ,
       value: id,
     });
@@ -663,11 +391,11 @@
   };
 
   const sendUpdateRequest = async (
-    obj: Search<BotColumns>,
-    values: Array<Field<BotColumnsUpdate>>,
+    obj: Search<HostColumns>,
+    values: Array<Field<HostColumnsUpdate>>,
   ) => {
     try {
-      const ret = await updateBotApi({ keyword: obj, new_values: values });
+      const ret = await updateHostApi({ keyword: obj, new_values: values });
       message.success(ret.message);
     } catch (identifier: any) {
       message.error(identifier.toString());
@@ -707,7 +435,7 @@
   }; // 清空更新条件
 
   const updateSelected = async () => {
-    const srs: Array<Bot> = await getSelectRows();
+    const srs: Array<Host> = await getSelectRows();
     if (srs.length == 0) {
       return;
     }
@@ -716,7 +444,7 @@
       tmpIDs.push(srs[v].id);
     }
     requestDataForUpdate.fields.splice(0, requestDataForUpdate.fields.length, {
-      key: BotColumns.ID,
+      key: HostColumns.ID,
       operator: 'IN',
       value: tmpIDs,
     });
@@ -725,26 +453,25 @@
 
   // 新增数据
   const useForm = Form.useForm;
-  const secType = ref(BotSecurity.SIGNATURE);
   const createRules = reactive({
-    name: [
+    host: [
       {
         required: true,
-        message: '请输入机器人名称',
+        message: '请输入主机地址',
+      },
+    ],
+    hostname: [
+      {
+        required: true,
+        message: '请输入站点名称',
       },
     ],
   });
-  let createData = reactive<BotCreate>({
-    name: undefined,
-    apikey: undefined,
-    security: {},
-    ktype: BotType.NORMAL,
-    provider: BotProvider.DINGTALK,
-    active: false,
-    service_rank: 1000,
-    receive_broadcast: false,
-    note: undefined,
-    at_user: [],
+  let createData = reactive<HostCreate>({
+    host: undefined,
+    hostname: undefined,
+    rank: 600,
+    ext: undefined,
   });
   const { resetFields, validate, validateInfos } = useForm(createData, createRules);
   const visibleCreateModal = ref<boolean>(false);
@@ -752,9 +479,9 @@
     visibleCreateModal.value = !visibleCreateModal.value;
   }; // 展示创建框开关函数
 
-  const sendCreateRequest = async (obj: BotCreate) => {
+  const sendCreateRequest = async (obj: HostCreate) => {
     try {
-      const ret = await createBotApi(obj);
+      const ret = await createHostApi(obj);
       message.success(ret.message);
     } catch (identifier: any) {
       message.error(identifier.toString());
@@ -765,12 +492,6 @@
   const confirmCreate = async () => {
     validate()
       .then(async () => {
-        if (createData.security.text == '' || createData.security.text == null) {
-          delete createData.security.text;
-        }
-        if (createData.security.signature == '' || createData.security.signature == null) {
-          delete createData.security.signature;
-        }
         await sendCreateRequest(createData);
         await getSourceData(requestDataForSearch);
         showModalForCreate();
@@ -782,9 +503,9 @@
   }; // 发起创建请求
 
   // 搜索相关
-  let requestDataForSearch: Search<BotColumns> = reactive({
+  let requestDataForSearch: Search<HostColumns> = reactive({
     offset: 0,
-    limit: 20,
+    limit: 100,
     order: null,
     order_field: null,
     fields: [],
@@ -861,7 +582,7 @@
 
   // 删除相关
   const visibleDeleteModal = ref<boolean>(false); // 展示条件删除框开关
-  let requestDataForDelete: Search<BotColumnsNative> = reactive({
+  let requestDataForDelete: Search<HostColumns> = reactive({
     offset: 0,
     limit: 1,
     order: null,
@@ -877,9 +598,9 @@
     visibleDeleteModal.value = !visibleDeleteModal.value;
   }; // 展示条件删除框开关函数
 
-  const sendDeleteRequest = async (obj: Search<BotColumnsNative>) => {
+  const sendDeleteRequest = async (obj: Search<HostColumns>) => {
     try {
-      const ret = await deleteBotApi(obj);
+      const ret = await deleteHostApi(obj);
       message.success(ret.message);
     } catch (identifier: any) {
       message.error(identifier.toString());
@@ -887,11 +608,11 @@
     }
   }; // 发送删除请求
 
-  const deleteOne = async (obj: Bot) => {
+  const deleteOne = async (obj: Host) => {
     await sendDeleteRequest({
       offset: 0,
       limit: 1,
-      fields: [{ key: BotColumnsNative.ID, operator: Operator.EQ, value: obj.id }],
+      fields: [{ key: HostColumns.ID, operator: Operator.EQ, value: obj.id }],
       order_field: null,
       order: null,
     });
@@ -910,7 +631,7 @@
   }; // 删除全部数据
 
   const deleteSelected = async () => {
-    const srs: Array<Bot> = await getSelectRows();
+    const srs: Array<Host> = await getSelectRows();
     if (srs.length == 0) {
       return;
     }
@@ -921,7 +642,7 @@
     await sendDeleteRequest({
       offset: 0,
       limit: 1,
-      fields: [{ key: BotColumnsNative.ID, operator: 'IN', value: tmpIDs }],
+      fields: [{ key: HostColumns.ID, operator: 'IN', value: tmpIDs }],
       order_field: null,
       order: null,
     });
@@ -943,78 +664,6 @@
     await getSourceData(requestDataForSearch);
   }; // 发起条件删除请求
 
-  // 订阅服务相关
-  const serviceFiltr = ref<string>();
-  const subscribeData = ref<Array<{ id: number; name: string; note: string }>>([]);
-  const listener = ref<Bot>();
-  const listenerSubscribe = ref<Array<number>>([]);
-  const visibleSubscribeModal = ref(false);
-  const showModalForSubscribe = (bot: Bot) => {
-    listener.value = bot;
-    listenerSubscribe.value.slice(0, listenerSubscribe.value.length);
-    if (bot.subscribe) {
-      for (const s in bot.subscribe) {
-        listenerSubscribe.value.push(bot.subscribe[s].id);
-      }
-    }
-    visibleSubscribeModal.value = !visibleSubscribeModal.value;
-  }; // 展示订阅框开关函数
-
-  const addSubscribe = async (
-    service: { id: number; name: string; note: string },
-    filtr: boolean,
-  ) => {
-    try {
-      const ret = await createSubscribeApi({
-        listener: listener.value!.id,
-        podcaster: service.id,
-        filtr: filtr,
-      });
-
-      if (listener.value?.subscribe == null) {
-        listener.value!.subscribe = [];
-      }
-      listener.value?.subscribe.push({
-        id: service.id,
-        name: service.name,
-        note: service.note,
-        filtr: filtr,
-      });
-      listenerSubscribe.value.push(service.id);
-      message.success(ret.message);
-    } catch (identifier: any) {
-      message.error(identifier.toString());
-      return;
-    }
-  };
-
-  const delSubscribe = async (id: number) => {
-    try {
-      const ret = await deleteSubscribeApi({
-        offset: 0,
-        limit: 1,
-        order: null,
-        order_field: null,
-        fields: [
-          { key: SubscribeColumns.PODCASTER, operator: Operator.EQ, value: id },
-          { key: SubscribeColumns.LISTENER, operator: Operator.EQ, value: listener.value!.id },
-        ],
-      });
-
-      listener.value!.subscribe = listener.value!.subscribe.filter((obj) => obj.id != id);
-      listenerSubscribe.value.splice(listenerSubscribe.value.indexOf(id), 1);
-      message.success(ret.message);
-    } catch (identifier: any) {
-      message.error(identifier.toString());
-      return;
-    }
-  };
-
-  const colors = ['pink', 'red', 'orange', 'green', 'cyan', 'blue', 'purple'];
-  const getRandomColor = () => {
-    return colors[Math.floor(Math.random() * colors.length)];
-  };
-
   const [
     registerTable,
     { setTableData, setPagination, setLoading, clearSelectedRowKeys, getSelectRows },
@@ -1026,27 +675,19 @@
     striped: false,
     bordered: false,
     showTableSetting: true,
+    tableSetting: {
+      redo: false,
+    },
     pagination: {
       pageSize: 20,
       pageSizeOptions: ['20', '40', '60', '80', '100'],
     },
     showIndexColumn: false,
     onChange: tableChangeHandle,
-    tableSetting: {
-      redo: false,
-    },
   });
 
   onMounted(async () => {
     await getSourceData(requestDataForSearch);
-    try {
-      const ret = await getSubscribeApi();
-      if (ret.data) {
-        subscribeData.value = ret.data;
-      }
-    } catch (identifier: any) {
-      message.error(identifier.toString());
-    }
   });
 
   const userStore = useUserStore();

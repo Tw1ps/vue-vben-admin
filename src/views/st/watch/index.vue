@@ -243,6 +243,13 @@
               </SelectOption>
             </Select>
           </FormItem>
+          <FormItem label="暗链检测引擎" v-if="createByHostname == 'HiddenLink'">
+            <Select
+              mode="multiple"
+              v-model:value="createData.ext!.module"
+              :options="[{ value: 'baidu' }]"
+            />
+          </FormItem>
           <FormItem :label="t('st.columns.note')">
             <Input v-model:value="createData.note" :maxlength="63" placeholder="请输入备注" />
           </FormItem>
@@ -660,7 +667,7 @@
     page_start: 1,
     page_end: 1,
     note: undefined,
-    ext: { censor_bot_id: undefined },
+    ext: {},
   });
   const createByBotID = ref<number>();
   const createByHostname = ref<string>();
@@ -690,6 +697,16 @@
     }
     validate()
       .then(async () => {
+        if (createData.ext!.censor_bot_id == '' || createData.ext!.censor_bot_id == null) {
+          delete createData.ext!.censor_bot_id;
+        }
+        if (
+          createData.ext!.module == '' ||
+          createData.ext!.module == null ||
+          createByHostname.value != 'HiddenLink'
+        ) {
+          delete createData.ext!.module;
+        }
         await sendCreateRequest(createData);
         await getSourceData(requestDataForSearch);
         showModalForCreate();
@@ -879,6 +896,9 @@
     },
     showIndexColumn: false,
     onChange: tableChangeHandle,
+    tableSetting: {
+      redo: false,
+    },
   });
 
   onMounted(async () => {
@@ -903,4 +923,12 @@
 
   const userStore = useUserStore();
   const userInfo = computed(() => userStore.getUserInfo);
+  if (userInfo.value.rank > 600) {
+    requestDataForSearch.fields.push({
+      uuid: uuid4(),
+      key: WatchColumns.USER_ID,
+      operator: Operator.EQ,
+      value: userInfo.value.id,
+    });
+  }
 </script>

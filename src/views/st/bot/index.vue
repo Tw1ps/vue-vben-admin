@@ -322,7 +322,7 @@
           <FormItem :label="t('st.columns.name')" v-bind="validateInfos.name">
             <Input v-model:value="createData.name" />
           </FormItem>
-          <FormItem :label="t('st.columns.name')" v-bind="validateInfos.apikey">
+          <FormItem :label="t('st.columns.apikey')" v-bind="validateInfos.apikey">
             <Input v-model:value="createData.apikey" />
           </FormItem>
           <FormItem :label="t('st.columns.security')">

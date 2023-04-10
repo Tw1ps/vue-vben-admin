@@ -120,6 +120,7 @@ specifiers:
   vue-router: ^4.0.14
   vue-tsc: ^1.0.9
   vue-types: ^4.1.1
+  vue3-ace-editor: ^2.2.2
   vuedraggable: ^4.1.0
   vxe-table: ^4.3.9
   vxe-table-plugin-export-xlsx: ^3.0.4
@@ -168,6 +169,7 @@ dependencies:
   vue-json-pretty: 2.2.3_vue@3.2.47
   vue-router: 4.1.6_vue@3.2.47
   vue-types: 4.2.1_vue@3.2.47
+  vue3-ace-editor: 2.2.2
   vuedraggable: 4.1.0_vue@3.2.47
   vxe-table: 4.3.9_vue@3.2.47+xe-utils@3.5.7
   vxe-table-plugin-export-xlsx: 3.0.4_vxe-table@4.3.9
@@ -3135,6 +3137,10 @@ packages:
   /abbrev/1.1.1:
     resolution: {integrity: sha512-nne9/IiQ/hzIhY6pdDnbBtz7DjPTKrY00P/zvPSm5pOFkl6xuGrGnXn/VtTNNfNtAfZ9/1RtehkszU9qcTii0Q==}
     dev: true
+
+  /ace-builds/1.16.0:
+    resolution: {integrity: sha512-EriMhoxdfhh0zKm7icSt8EXekODAOVsYh9fpnlru9ALwf0Iw7J7bpuqLjhi3QRxvVKR7P0teQdJwTvjVMcYHuw==}
+    dev: false
 
   /acorn-jsx/5.3.2_acorn@8.8.2:
     resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}
@@ -11013,6 +11019,14 @@ packages:
       '@vue/runtime-dom': 3.2.47
       '@vue/server-renderer': 3.2.47_vue@3.2.47
       '@vue/shared': 3.2.47
+
+  /vue3-ace-editor/2.2.2:
+    resolution: {integrity: sha512-fZ6OWosbU+odLrtrcGC/536QjCigujYJB0Hf6/tBp+ef/ohTadwQAqyBlVzOmvrmzZyubphpV9zkaZcx5Fuivw==}
+    dependencies:
+      ace-builds: 1.16.0
+      resize-observer-polyfill: 1.5.1
+      vue: 3.2.47
+    dev: false
 
   /vuedraggable/4.1.0_vue@3.2.47:
     resolution: {integrity: sha512-FU5HCWBmsf20GpP3eudURW3WdWTKIbEIQxh9/8GE806hydR9qZqRRxRE3RjqX7PkuLuMQG/A7n3cfj9rCEchww==}

@@ -57,6 +57,19 @@
                 ><span class="p-2" v-if="text.length > 2"> ... {{ text.length - 2 }} </span>
               </Tooltip>
             </template>
+            <template v-else-if="column.key === 'tag'">
+              <Tooltip placement="bottom">
+                <template v-if="text.length > 2" #title>
+                  <span
+                    ><Tag class="p-1" :color="getRandomColor()" :key="k" v-for="k in text">{{
+                      k
+                    }}</Tag></span
+                  >
+                </template>
+                <Tag :color="getRandomColor()" :key="k" v-for="k in text.slice(0, 2)">{{ k }}</Tag
+                ><span class="p-2" v-if="text.length > 2"> ... {{ text.length - 2 }} </span>
+              </Tooltip>
+            </template>
             <template v-else-if="column.key === 'info'">
               <Tag :color="getRandomColor()" v-if="text?.user"
                 >{{ t('st.info.user') }}: {{ text!.user }}</Tag

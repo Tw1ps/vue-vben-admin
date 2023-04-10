@@ -74,6 +74,7 @@
     "vue-json-pretty": "^2.0.6",
     "vue-router": "^4.0.14",
     "vue-types": "^4.1.1",
+    "vue3-ace-editor": "^2.2.2",
     "vuedraggable": "^4.1.0",
     "vxe-table": "^4.3.9",
     "vxe-table-plugin-export-xlsx": "^3.0.4",

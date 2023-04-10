@@ -11,7 +11,7 @@ const usr: AppRouteModule = {
   meta: {
     orderNo: 30,
     icon: 'ant-design:team-outlined',
-    title: t('st.page.user'),
+    title: t('st.page.usr'),
   },
   children: [
     {

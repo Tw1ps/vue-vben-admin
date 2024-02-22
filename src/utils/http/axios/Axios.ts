@@ -222,6 +222,10 @@ export class VAxios {
 
     conf = this.supportFormData(conf);
 
+    if (opt.timeout) {
+      conf.timeout = opt.timeout;
+    }
+
     return new Promise((resolve, reject) => {
       this.axiosInstance
         .request<any, AxiosResponse<Result>>(conf)

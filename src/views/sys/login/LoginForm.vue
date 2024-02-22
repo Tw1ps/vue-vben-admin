@@ -26,9 +26,38 @@
     </FormItem>
 
     <ARow class="enter-x">
-      <ACol :span="12">
+      <ACol :span="12" />
+      <ACol :span="6" class="p-1" />
+      <!--  <ACol :span="12">
+        <FormItem :style="{ 'text-align': 'right' }">
+          <Button type="link" size="small" @click="setLoginState(LoginStateEnum.RESET_PASSWORD)">
+            {{ t('sys.login.forgetPassword') }}
+          </Button>
+        </FormItem>
+      </ACol> -->
+      <ACol :span="6">
+        <FormItem :style="{ 'text-align': 'right' }">
+          {{ '登录状态维持' }}:
+          <a-select
+            :default-value="60"
+            v-model:value="expires_minutes"
+            :options="[
+              { value: 30, label: '0.5小时' },
+              { value: 60, label: '1小时' },
+              { value: 360, label: '6小时' },
+              { value: 540, label: '9小时' },
+              { value: 720, label: '12小时' },
+              { value: 1440, label: '24小时' },
+            ]"
+          />
+        </FormItem>
+      </ACol>
+    </ARow>
+
+    <ARow class="enter-x">
+      <!-- <ACol :span="12">
         <FormItem>
-          <!-- No logic, you need to deal with it yourself -->
+          No logic, you need to deal with it yourself
           <Checkbox v-model:checked="rememberMe" size="small">
             {{ t('sys.login.rememberMe') }}
           </Checkbox>
@@ -36,12 +65,12 @@
       </ACol>
       <ACol :span="12">
         <FormItem :style="{ 'text-align': 'right' }">
-          <!-- No logic, you need to deal with it yourself -->
+          No logic, you need to deal with it yourself
           <Button type="link" size="small" @click="setLoginState(LoginStateEnum.RESET_PASSWORD)">
             {{ t('sys.login.forgetPassword') }}
           </Button>
         </FormItem>
-      </ACol>
+      </ACol> -->
     </ARow>
 
     <FormItem class="enter-x">
@@ -53,7 +82,7 @@
       </Button> -->
     </FormItem>
     <ARow class="enter-x" :gutter="[16, 16]">
-      <ACol :md="8" :xs="24">
+      <!-- <ACol :md="8" :xs="24">
         <Button block @click="setLoginState(LoginStateEnum.MOBILE)">
           {{ t('sys.login.mobileSignInFormTitle') }}
         </Button>
@@ -67,43 +96,44 @@
         <Button block @click="setLoginState(LoginStateEnum.REGISTER)">
           {{ t('sys.login.registerButton') }}
         </Button>
-      </ACol>
+      </ACol> -->
     </ARow>
 
-    <Divider class="enter-x">{{ t('sys.login.otherSignIn') }}</Divider>
+    <!-- <Divider class="enter-x">{{ t('sys.login.otherSignIn') }}</Divider> -->
 
     <div class="flex justify-evenly enter-x" :class="`${prefixCls}-sign-in-way`">
-      <GithubFilled />
+      <!-- <GithubFilled />
       <WechatFilled />
       <AlipayCircleFilled />
       <GoogleCircleFilled />
-      <TwitterCircleFilled />
+      <TwitterCircleFilled /> -->
     </div>
   </Form>
 </template>
 <script lang="ts" setup>
-  import { reactive, ref, unref, computed } from 'vue';
+  import { computed, reactive, ref, unref } from 'vue';
 
-  import { Checkbox, Form, Input, Row, Col, Button, Divider } from 'ant-design-vue';
-  import {
-    GithubFilled,
-    WechatFilled,
-    AlipayCircleFilled,
-    GoogleCircleFilled,
-    TwitterCircleFilled,
-  } from '@ant-design/icons-vue';
+  import { Button, Form, Input, Row, Select, Col } from 'ant-design-vue';
+  // import {
+  //   GithubFilled,
+  //   WechatFilled,
+  //   AlipayCircleFilled,
+  //   GoogleCircleFilled,
+  //   TwitterCircleFilled,
+  // } from '@ant-design/icons-vue';
   import LoginFormTitle from './LoginFormTitle.vue';
 
   import { useI18n } from '@/hooks/web/useI18n';
   import { useMessage } from '@/hooks/web/useMessage';
 
-  import { useUserStore } from '@/store/modules/user';
-  import { LoginStateEnum, useLoginState, useFormRules, useFormValid } from './useLogin';
   import { useDesign } from '@/hooks/web/useDesign';
+  import { useUserStore } from '@/store/modules/user';
+  import { LoginStateEnum, useFormRules, useFormValid, useLoginState } from './useLogin';
   //import { onKeyStroke } from '@vueuse/core';
 
   const ACol = Col;
   const ARow = Row;
+  const ASelect = Select;
   const FormItem = Form.Item;
   const InputPassword = Input.Password;
   const { t } = useI18n();
@@ -111,17 +141,19 @@
   const { prefixCls } = useDesign('login');
   const userStore = useUserStore();
 
-  const { setLoginState, getLoginState } = useLoginState();
+  const { getLoginState } = useLoginState();
   const { getFormRules } = useFormRules();
 
   const formRef = ref();
   const loading = ref(false);
-  const rememberMe = ref(false);
+  // const rememberMe = ref(false);
 
   const formData = reactive({
-    account: 'vben',
-    password: '123456',
+    account: '',
+    password: '',
   });
+
+  const expires_minutes = ref<number>(60);
 
   const { validForm } = useFormValid(formRef);
 
@@ -137,12 +169,13 @@
       const userInfo = await userStore.login({
         password: data.password,
         username: data.account,
+        expires_minutes: expires_minutes.value,
         mode: 'none', //不要默认的错误提示
       });
       if (userInfo) {
         notification.success({
           message: t('sys.login.loginSuccessTitle'),
-          description: `${t('sys.login.loginSuccessDesc')}: ${userInfo.realName}`,
+          description: `${t('sys.login.loginSuccessDesc')}: ${userInfo.nickname}`,
           duration: 3,
         });
       }

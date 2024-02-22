@@ -36,13 +36,27 @@ export interface ErrorLogInfo {
 }
 
 export interface UserInfo {
-  userId: string | number;
+  // userId: string | number;
+  // username: string;
+  // realName: string;
+  // avatar: string;
+  // desc?: string;
+  // homePath?: string;
+  // roles: RoleInfo[];
+  roles?: RoleInfo[];
+  id: string;
   username: string;
-  realName: string;
-  avatar: string;
-  desc?: string;
-  homePath?: string;
-  roles: RoleInfo[];
+  nickname?: string;
+  email?: string;
+  active: boolean;
+  note?: string;
+  rank: number;
+  last_login?: Date;
+  this_login?: Date;
+  created_date?: Date;
+  updated_date?: Date;
+  license: string;
+  license_rank?: number;
 }
 
 export interface BeforeMiniState {

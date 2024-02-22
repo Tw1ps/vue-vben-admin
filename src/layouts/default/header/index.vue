@@ -16,7 +16,6 @@
         :theme="getHeaderTheme"
         :sider="false"
       />
-      <LayoutBreadcrumb v-if="getShowContent && getShowBread" :theme="getHeaderTheme" />
     </div>
     <!-- left end -->
 
@@ -36,8 +35,6 @@
       <AppSearch v-if="getShowSearch" :class="`${prefixCls}-action__item `" />
 
       <ErrorAction v-if="getUseErrorHandle" :class="`${prefixCls}-action__item error-action`" />
-
-      <Notify v-if="getShowNotice" :class="`${prefixCls}-action__item notify-item`" />
 
       <FullScreen v-if="getShowFullScreen" :class="`${prefixCls}-action__item fullscreen-item`" />
 
@@ -72,7 +69,7 @@
 
   import LayoutMenu from '../menu/index.vue';
   import LayoutTrigger from '../trigger/index.vue';
-  import { ErrorAction, FullScreen, LayoutBreadcrumb, Notify, UserDropDown } from './components';
+  import { ErrorAction, FullScreen, UserDropDown } from './components';
 
   const SettingDrawer = createAsyncComponent(() => import('@/layouts/default/setting/index.vue'), {
     loading: true,
@@ -96,9 +93,7 @@
   const {
     getHeaderTheme,
     getShowFullScreen,
-    getShowNotice,
     getShowContent,
-    getShowBread,
     getShowHeaderLogo,
     getShowHeader,
     getShowSearch,

@@ -91,7 +91,7 @@
   import { getSourceData, requestDataForSearch } from '../search';
 
   export default defineComponent({
-    name: 'TableShow',
+    name: 'TableView',
     components: {
       BasicTable,
       Popconfirm,

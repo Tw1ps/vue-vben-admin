@@ -1,10 +1,12 @@
 {
+  "padding": " ",
   "simple": {
     "filter_criteria": "筛选条件",
     "data_total": "数据总数"
   },
   "base": {
-    "create": "新增",
+    "total": "总数",
+    "create": "创建",
     "add": "添加",
     "delete": "删除",
     "setNull": "设为空",
@@ -44,7 +46,34 @@
     "exact_search": "精确搜索",
     "fuzz_search": "模糊搜索",
     "edit": "编辑",
-    "not_allow": "不允许"
+    "not_allow": "不允许",
+    "type": "类型",
+    "confirm": "提交",
+    "threads": "线程列表",
+    "subprocess": "子进程列表",
+    "async_tasks": "异步任务列表",
+    "normal": "正常",
+    "delay": "延迟",
+    "abnormal": "异常",
+    "operator_bar": "操作栏",
+    "system": "系统",
+    "netstat": "网络状态",
+    "tasklist": "任务列表",
+    "homepage": "主页",
+    "log": "日志",
+    "setting": "设置",
+    "handle": "句柄",
+    "select": "选择",
+    "operate": "操作",
+    "attach": "附加",
+    "cover": "替换",
+    "set": "设置",
+    "level": "等级",
+    "decode": "解码",
+    "encode": "编码",
+    "task": "任务",
+    "schedule": "计划",
+    "rel": "关联"
   },
   "op": {
     "true": "True",
@@ -88,7 +117,21 @@
     "no_record": "仅推送",
     "only_record": "仅记录",
     "only_pull": "仅推送",
-    "censor": "审查"
+    "censor": "审查",
+    "pending": "等待",
+    "running": "运行",
+    "finished": "结束",
+    "pause": "暂停",
+    "loop": "循环",
+    "hurry": "尽快",
+    "interval": "间隔",
+    "cron": "计划",
+    "date": "日期",
+    "idle": "空闲",
+    "performance": "性能",
+    "local": "本地",
+    "single_limit": "单机限制",
+    "total_limit": "总数限制"
   },
   "columns": {
     "id": "ID",
@@ -182,7 +225,52 @@
     "response": "响应",
     "alert": "告警",
     "alert_msg": "告警信息",
-    "executed_node": "检测节点"
+    "executed_node": "检测节点",
+    "key": "键",
+    "value": "值",
+    "cid": "连接ID",
+    "system_memory_total": "系统内存总量",
+    "system_memory_used": "系统内存占用",
+    "system_memory_used_max": "最大系统内存占用",
+    "system_memory_free": "空闲系统内存",
+    "process_memory_used": "进程内存占用",
+    "process_memory_used_max": "最大进程内存占用",
+    "heartbeat": "心跳时间",
+    "boot_time": "系统运行时长",
+    "boot_process": "进程运行时长",
+    "cpu_used": "CPU占用",
+    "cpu_used_max": "最大CPU占用",
+    "os": "操作系统",
+    "os_version": "操作系统版本",
+    "user": "用户",
+    "node_list": "节点列表",
+    "method": "方式",
+    "data": "数据",
+    "desc": "描述",
+    "desc_args": "参数描述",
+    "required_memory": "内存需求",
+    "required_os": "系统需求",
+    "job": "作业",
+    "lock_time": "锁定时间",
+    "stat": "统计",
+    "count": "计数",
+    "task": "任务",
+    "ing": "中",
+    "ed": "已",
+    "execute": "执行",
+    "last": "最近",
+    "node": "节点",
+    "msg": "信息",
+    "elapsed": "耗时",
+    "tactics": "策略"
+  },
+  "menu": {
+    "data": "数据页",
+    "user": "用户页",
+    "asset": "资源页",
+    "system": "系统页",
+    "cluster": "集群页",
+    "config": "配置页"
   },
   "page": {
     "goods": "数据页",
@@ -199,7 +287,16 @@
     "system": "系统管理",
     "site": "站点管理",
     "record": "检测记录",
-    "site_detail": "站点详情"
+    "site_detail": "站点详情",
+    "system_setting": "系统设置",
+    "status": "系统状态",
+    "system_running": "系统进程",
+    "cluster": "集群管理",
+    "node_detail": "节点详情",
+    "node_status": "节点状态",
+    "system_log": "系统日志",
+    "fmt_log": "格式日志",
+    "task": "任务管理"
   },
   "pageIntro": {
     "goods": "在此页查询所有数据记录",
@@ -210,7 +307,8 @@
     "watch": "在此页管理监测对象",
     "keyword": "在此页管理监测关键词",
     "host": "在此页管理监测目标站点的访问域名",
-    "account": "在此页管理需要登录的目标站点账号"
+    "account": "在此页管理需要登录的目标站点账号",
+    "setting": "在此页管理系统静态设置"
   },
   "privilege": {
     "tour": "游览用户",
@@ -222,5 +320,11 @@
   },
   "special": {
     "note": "副词"
+  },
+  "desc": {
+    "attach_handle": "附加句柄后才会产生日志记录",
+    "not_attach_handle": "如果句柄列表中不存在'InterceptHandler'则未附加",
+    "delete_handle": "从句柄列表中删除'InterceptHandler'",
+    "cover_handle": "使用'InterceptHandler'替换整个句柄列表"
   }
 }

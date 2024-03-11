@@ -4,7 +4,7 @@
     <div class="!my-2 w-full">
       <Card size="small" :bordered="false"> <UtilsBar /> </Card>
       <Card class="!my-2">
-        <TableShow />
+        <TableView />
       </Card>
       <!-- <Card :title="t('st.base.usage')" :bordered="false">使用说明 </Card> -->
     </div>
@@ -25,7 +25,7 @@
   import { CreateModal } from './create';
   import { EditModal } from './edit';
   import { DeleteModal } from './delete';
-  import { TableShow } from './table';
+  import { TableView } from './table';
 
   export default defineComponent({
     name: 'Host',
@@ -35,7 +35,7 @@
       CreateModal,
       EditModal,
       UtilsBar,
-      TableShow,
+      TableView,
       DeleteModal,
     },
   });

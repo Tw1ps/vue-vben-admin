@@ -9,9 +9,9 @@ const data: AppRouteModule = {
   component: LAYOUT,
   redirect: '/data/host',
   meta: {
-    orderNo: 20,
-    icon: 'ant-design:project-outlined',
-    title: t('st.page.goods'),
+    orderNo: 10,
+    icon: 'ant-design:database-outlined',
+    title: t('st.menu.data'),
   },
   children: [
     {

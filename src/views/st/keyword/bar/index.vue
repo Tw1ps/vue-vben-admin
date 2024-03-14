@@ -5,11 +5,7 @@
         <CollapsePanel key="1" :header="t('st.base.advanced_search_bar')">
           <AdvancedSearch />
         </CollapsePanel>
-        <CollapsePanel
-          key="2"
-          :header="t('st.base.tool') + t('st.base.bar')"
-          v-if="userInfo.rank <= 10"
-        >
+        <CollapsePanel key="2" :header="t('st.base.tool') + t('st.base.bar')">
           <ToolsBar />
         </CollapsePanel>
         <!-- <CollapsePanel
@@ -24,9 +20,8 @@
 </template>
 <script lang="ts">
   import { useI18n } from '@/hooks/web/useI18n';
-  import { useUserStore } from '@/store/modules/user';
   import { Card, Collapse, CollapsePanel } from 'ant-design-vue';
-  import { computed, defineComponent, ref } from 'vue';
+  import { defineComponent, ref } from 'vue';
 
   import AdvancedSearch from './advanced.vue';
   // import QuickBar from './quick.vue';
@@ -45,7 +40,4 @@
   const { t } = useI18n();
 
   const activeKey = ref(['2']);
-
-  const userStore = useUserStore();
-  const userInfo = computed(() => userStore.getUserInfo);
 </script>

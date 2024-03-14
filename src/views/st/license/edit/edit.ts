@@ -40,7 +40,7 @@ export const columnsOptionsForUpdate = {
   columnsType: LicenseColumnsType,
 }; // 字段设置
 
-export const updateOne = (id: number) => {
+export const updateOne = (id: string) => {
   // clearUpdateCondition();
   requestDataForUpdate.fields!.splice(0, requestDataForUpdate.fields!.length, {
     uuid: uuid4(),

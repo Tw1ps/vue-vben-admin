@@ -109,7 +109,7 @@
                     <Dropdown trigger="click">
                       <SettingOutlined />
                       <template #overlay>
-                        <Menu>
+                        <Menu v-if="userInfo.rank <= 10">
                           <MenuItem>
                             <Popconfirm
                               :title="t('st.enum.pause')"
@@ -172,7 +172,9 @@
                   </template>
                   <Descriptions :column="1" :title="dt.name">
                     <template #extra>
-                      <a @click="showModal(dt)">{{ t('st.base.add') + t('st.base.schedule') }}</a>
+                      <a @click="showModal(dt)" v-if="userInfo.rank <= 10">{{
+                        t('st.base.add') + t('st.base.schedule')
+                      }}</a>
                     </template>
                     <DescriptionsItem :label="t('st.columns.id')">
                       {{ dt.id }}
@@ -444,7 +446,8 @@
     RightCircleOutlined,
     DeleteOutlined,
   } from '@ant-design/icons-vue';
-  import { defineComponent, onMounted, ref, reactive } from 'vue';
+  import { defineComponent, onMounted, ref, reactive, computed } from 'vue';
+  import { useUserStore } from '@/store/modules/user';
 
   import {
     getTaskApi,
@@ -535,6 +538,9 @@
   const dateKwds = reactive<DateKwds>({ timezone: 'Asia/Shanghai' });
   const cronKwds = reactive<CronKwds>({ timezone: 'Asia/Shanghai' });
   const intervalKwds = reactive<IntervalKwds>({ timezone: 'Asia/Shanghai' });
+
+  const userStore = useUserStore();
+  const userInfo = computed(() => userStore.getUserInfo);
 
   const sendCreateRequest = async (sched: addSchedData, data: Kwds) => {
     Object.entries(sched).forEach(([key, value]) => {

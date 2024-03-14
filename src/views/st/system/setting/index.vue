@@ -10,7 +10,7 @@
           <template #bodyCell="{ column, record, text }">
             <template v-if="column.key === 'action'">
               <Flex wrap="wrap" gap="small">
-                <a @click="showModalForSet(record.key, record.value)"
+                <a @click="showModalForSet(record.key, record.value)" v-if="userInfo.rank <= 10"
                   ><FormOutlined />{{ t('st.base.edit') }}</a
                 >
               </Flex>
@@ -81,6 +81,7 @@
   import { BasicTable, BasicColumn, useTable } from '@/components/Table';
   import { PageWrapper } from '@/components/Page';
   import { useI18n } from '@/hooks/web/useI18n';
+  import { useUserStore } from '@/store/modules/user';
   import { FormOutlined } from '@ant-design/icons-vue';
   import {
     Card,
@@ -96,7 +97,7 @@
     SelectOption,
     Switch,
   } from 'ant-design-vue';
-  import { defineComponent, onMounted, reactive, ref } from 'vue';
+  import { defineComponent, onMounted, reactive, ref, computed } from 'vue';
   import VueJsonPretty from 'vue-json-pretty';
   import 'vue-json-pretty/lib/styles.css';
 
@@ -125,6 +126,9 @@
 </script>
 <script lang="ts" setup>
   const { t } = useI18n();
+
+  const userStore = useUserStore();
+  const userInfo = computed(() => userStore.getUserInfo);
 
   const allowType = [
     { label: '字符串', value: 'string' },

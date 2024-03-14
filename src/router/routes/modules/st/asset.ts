@@ -2,6 +2,7 @@ import type { AppRouteModule } from '@/router/types';
 
 import { t } from '@/hooks/web/useI18n';
 import { LAYOUT } from '@/router/constant';
+import { RoleEnum } from '@/enums/roleEnum';
 
 const asset: AppRouteModule = {
   path: '/asset',
@@ -39,6 +40,7 @@ const asset: AppRouteModule = {
       meta: {
         // affix: true,
         title: t('st.page.task'),
+        roles: [RoleEnum.SU, RoleEnum.ADMIN, RoleEnum.SERVICE, RoleEnum.OVERVIEW],
       },
     },
     // {

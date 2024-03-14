@@ -136,13 +136,10 @@ export const useUserStore = defineStore({
       if (license_rank <= 10) {
         roles.push({ roleName: RoleEnum.ADMIN, value: RoleEnum.ADMIN });
       }
-      if (license_rank == 101) {
-        roles.push({ roleName: RoleEnum.ZD, value: RoleEnum.ZD });
-      }
       if (license_rank <= 600) {
         roles.push({ roleName: RoleEnum.SERVICE, value: RoleEnum.SERVICE });
       }
-      if (license_rank <= 700) {
+      if (license_rank <= 800) {
         roles.push({ roleName: RoleEnum.OVERVIEW, value: RoleEnum.OVERVIEW });
       }
       if (license_rank <= 1000) {

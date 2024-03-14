@@ -1,5 +1,6 @@
 import type { AppRouteModule } from '@/router/types';
 
+import { RoleEnum } from '@/enums/roleEnum';
 import { t } from '@/hooks/web/useI18n';
 import { LAYOUT } from '@/router/constant';
 
@@ -12,6 +13,7 @@ const system: AppRouteModule = {
     orderNo: 90,
     icon: 'ant-design:setting-outlined',
     title: t('st.menu.system'),
+    roles: [RoleEnum.SU, RoleEnum.ADMIN, RoleEnum.SERVICE, RoleEnum.OVERVIEW],
   },
   children: [
     {
@@ -30,6 +32,7 @@ const system: AppRouteModule = {
       meta: {
         // affix: true,
         title: t('st.page.system_log'),
+        roles: [RoleEnum.SU, RoleEnum.ADMIN],
       },
     },
     {
@@ -48,6 +51,7 @@ const system: AppRouteModule = {
       meta: {
         // affix: true,
         title: t('st.page.system_setting'),
+        roles: [RoleEnum.SU, RoleEnum.ADMIN],
       },
     },
   ],

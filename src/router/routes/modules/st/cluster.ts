@@ -1,5 +1,6 @@
 import type { AppRouteModule } from '@/router/types';
 
+import { RoleEnum } from '@/enums/roleEnum';
 import { t } from '@/hooks/web/useI18n';
 import { LAYOUT } from '@/router/constant';
 
@@ -10,8 +11,9 @@ const cluster: AppRouteModule = {
   redirect: '/cluster/nodes',
   meta: {
     orderNo: 30,
-    icon: 'ant-design:setting-outlined',
+    icon: 'ant-design:gateway-outlined',
     title: t('st.menu.cluster'),
+    roles: [RoleEnum.SU, RoleEnum.ADMIN, RoleEnum.SERVICE, RoleEnum.OVERVIEW],
   },
   children: [
     {

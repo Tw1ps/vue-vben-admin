@@ -51,7 +51,6 @@ const transform: AxiosTransform = {
       throw new Error(t('sys.api.apiRequestFailed'));
     }
     //  这里 code，result，message为 后台统一的字段，需要在 types.ts内修改为项目自己的接口返回格式
-    console.log(data);
     const { code, result, msg } = data;
 
     // 这里逻辑可以根据项目进行修改
@@ -179,11 +178,13 @@ const transform: AxiosTransform = {
     const { t } = useI18n();
     const errorLogStore = useErrorLogStoreWithOut();
     errorLogStore.addAjaxErrorInfo(error);
-    const { response, code, message, config } = error || {};
+    const { response, code, config } = error || {};
     const errorMessageMode = config?.requestOptions?.errorMessageMode || 'none';
-    const msg: string = response?.data?.error?.message ?? '';
+    const msg: string = response?.data?.detail?.msg ?? '';
+    const message: string = response?.data?.detail?.msg ?? '';
     const err: string = error?.toString?.() ?? '';
     let errMessage = '';
+    console.log(error);
 
     if (axios.isCancel(error)) {
       return Promise.reject(error);
@@ -195,6 +196,10 @@ const transform: AxiosTransform = {
       }
       if (err?.includes('Network Error')) {
         errMessage = t('sys.api.networkExceptionMsg');
+      }
+
+      if (msg) {
+        errMessage = msg;
       }
 
       if (errMessage) {

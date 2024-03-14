@@ -74,8 +74,8 @@ export enum BotProvider {
 export enum BotType {
   NORMAL = 0,
   ALERT = 1,
-  SERVICE = 2,
-  PRIVATE_SERVICE = 3,
+  // SERVICE = 2,
+  // PRIVATE_SERVICE = 3,
 }
 
 export const BotColumnsArray = createLabelArray(BotColumns);

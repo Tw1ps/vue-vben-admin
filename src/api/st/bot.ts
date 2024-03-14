@@ -1,6 +1,6 @@
 import { defHttp } from '@/utils/http/axios';
 import { Field, Search, Datas } from './model/base';
-import { BotColumns, Bot, BotCreate, BotColumnsUpdate, BotColumnsNative } from './model/bot';
+import { BotColumns, Bot, BotCreate, BotColumnsUpdate } from './model/bot';
 
 import { ErrorMessageMode } from '#/axios';
 
@@ -24,7 +24,7 @@ export function getBotApi(data: Search<BotColumns>, mode: ErrorMessageMode = 'mo
   );
 }
 
-export function deleteBotApi(data: Search<BotColumnsNative>, mode: ErrorMessageMode = 'modal') {
+export function deleteBotApi(data: Search<BotColumns>, mode: ErrorMessageMode = 'modal') {
   return defHttp.post<boolean>(
     {
       url: Api.DELETE,

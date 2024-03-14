@@ -1,7 +1,7 @@
 import { createLabelArray } from './base';
 
 export interface LicenseCreate {
-  authorized: string | undefined;
+  authorized?: string;
   active: boolean;
   rank: number;
   max_members: number;

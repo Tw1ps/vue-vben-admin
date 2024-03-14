@@ -1,10 +1,10 @@
 <template>
   <PageWrapper :title="'编号 ' + data.id + ' | ' + data.site" contentBackground headerSticky>
     <template #extra>
-      <a-button @click="showModalForUpdate"> 修改 </a-button>
+      <Button @click="showModalForUpdate(data.id)"> {{ t('st.base.edit') }} </Button>
 
       <Popconfirm title="确定删除吗？" ok-text="Yes" cancel-text="No" @confirm="deleteOne">
-        <a-button> 删除 </a-button>
+        <Button> {{ t('st.base.delete') }} </Button>
       </Popconfirm>
     </template>
 
@@ -122,110 +122,39 @@
         :bordered="true"
         class="mt-5"
       >
-        <ImagePreviewGroup>
-          <Image
-            :width="500"
-            v-for="k in data.screenshot"
-            :key="k"
-            :src="'http://192.168.2.238:9000/d14faebb691947929d762e5abf4a4087/' + k"
-          />
+        <ImagePreviewGroup v-if="globSetting.ossUrl">
+          <Image :width="500" v-for="k in data.screenshot" :key="k" :src="globSetting.ossUrl + k" />
         </ImagePreviewGroup>
       </Card>
     </div>
 
-    <Modal
-      v-model:visible="visibleUpdateModal"
-      class="w-auto h-auto"
-      @ok="confirmUpdate"
-      :title="t('st.base.update')"
-      :footer="null"
-    >
-      <Card :bordered="false" size="small">
-        <Form :label-col="{ span: 8 }" :wrapper-col="{ span: 14 }">
-          <FormItem
-            :label="t('st.columns.organizer') + t('st.columns.name')"
-            v-bind="validateInfos.organizer"
-          >
-            <Input
-              :maxlength="127"
-              v-model:value="updateData.organizer"
-              :placeholder="data.organizer"
-            />
-          </FormItem>
-          <FormItem
-            :label="t('st.columns.organizer') + t('st.columns.city')"
-            v-bind="validateInfos.city"
-          >
-            <Input :maxlength="31" v-model:value="updateData.city" :placeholder="data.city" />
-          </FormItem>
-          <FormItem :label="t('st.columns.organizer') + t('st.columns.location')">
-            <Input
-              :maxlength="255"
-              v-model:value="updateData.location"
-              :placeholder="data.location"
-            />
-          </FormItem>
-          <FormItem :label="t('st.columns.record')">
-            <Input :maxlength="63" v-model:value="updateData.record" :placeholder="data.record" />
-          </FormItem>
-          <FormItem :label="t('st.columns.site') + t('st.columns.name')">
-            <Input :maxlength="127" v-model:value="updateData.site" :placeholder="data.site" />
-          </FormItem>
-          <FormItem :label="t('st.columns.homepage')">
-            <Input v-model:value="updateData.homepage" :placeholder="data.homepage" />
-          </FormItem>
-          <FormItem :label="t('st.columns.active')">
-            <Switch v-model:checked="updateData.active" :default="data.active" />
-          </FormItem>
-          <FormItem :label="t('st.columns.alive')">
-            <Switch v-model:checked="updateData.alive" :default="data.alive" />
-          </FormItem>
-          <FormItem :label="t('st.columns.tag')">
-            <Select mode="tags" v-model:value="updateData.tag" :placeholder="data.tag" />
-          </FormItem>
-          <FormItem :label="t('st.columns.note')">
-            <Input v-model:value="updateData.note" :placeholder="data.note" />
-          </FormItem>
-          <FormItem :wrapper-col="{ span: 14, offset: 4 }">
-            <Space>
-              <a-button type="primary" @click.prevent="confirmUpdate">{{
-                t('st.base.add')
-              }}</a-button>
-              <a-button @click="resetFields">{{ t('st.base.reset') }}</a-button>
-            </Space>
-          </FormItem>
-        </Form>
-      </Card>
-    </Modal>
+    <HostDetailUpdateModal />
   </PageWrapper>
 </template>
 <script lang="ts">
-  import { deleteHostApi, getHostDetailApi, updateHostApi } from '@/api/st/host';
-  import { Operator, Search, Field } from '@/api/st/model/base';
-  import { Host, HostColumns, HostColumnsUpdate } from '@/api/st/model/host';
+  import { deleteHostApi } from '@/api/st/host';
+  import { Operator, Search } from '@/api/st/model/base';
+  import { HostColumns } from '@/api/st/model/host';
   import { PageWrapper } from '@/components/Page';
+  import { useGlobSetting } from '@/hooks/setting';
   import { useI18n } from '@/hooks/web/useI18n';
   import {
     Card,
     Collapse,
     CollapsePanel,
-    Form,
-    FormItem,
-    Input,
-    Modal,
     Popconfirm,
-    Select,
-    Switch,
     Tag,
     message,
     Descriptions,
     ImagePreviewGroup,
     Image,
-    Space,
+    Button,
   } from 'ant-design-vue';
-  import { computed, defineComponent, onMounted, reactive, ref, unref, Ref } from 'vue';
+  import { computed, defineComponent, onMounted, unref } from 'vue';
   import { useTabs } from '@/hooks/web/useTabs';
   import { useRouter } from 'vue-router';
+
+  import { HostDetailUpdateModal, data, showModalForUpdate, getSourceData } from './edit';
 
   export default defineComponent({
     name: 'HostDetail',
@@ -235,21 +164,17 @@
       Collapse,
       CollapsePanel,
       Popconfirm,
-      Modal,
-      Form,
-      FormItem,
-      Input,
       Tag,
-      Switch,
-      Select,
       ImagePreviewGroup,
       Image,
-      Space,
+      HostDetailUpdateModal,
+      Button,
     },
   });
 </script>
 <script lang="ts" setup>
   const { t } = useI18n();
+  const globSetting = useGlobSetting();
 
   const { setTitle, closeCurrent } = useTabs();
 
@@ -268,17 +193,6 @@
     const octet4 = number & 255;
 
     return `${octet1}.${octet2}.${octet3}.${octet4}`;
-  };
-
-  let data: Ref<Host> = ref({});
-
-  // 获取数据请求
-  const getSourceData = async (v: number | string | Array<any>) => {
-    try {
-      data.value = await getHostDetailApi(v);
-    } catch (identifier: any) {
-      message.error(identifier.toString());
-    }
   };
 
   // 删除相关
@@ -302,104 +216,6 @@
     });
     closeCurrent();
   }; // 按ID删除单个数据
-
-  // 修改相关
-  const useForm = Form.useForm;
-  let updateData = reactive({
-    organizer: undefined,
-    city: undefined,
-    location: undefined,
-    record: undefined,
-    site: undefined,
-    homepage: undefined,
-    active: undefined,
-    alive: undefined,
-    tag: undefined,
-    note: undefined,
-  });
-
-  const { resetFields, validate, validateInfos } = useForm(updateData);
-  const visibleUpdateModal = ref<boolean>(false);
-  const showModalForUpdate = () => {
-    updateData.active = data.value.active;
-    updateData.alive = data.value.alive;
-    updateData.tag = data.value.tag;
-    visibleUpdateModal.value = !visibleUpdateModal.value;
-  }; // 展示创建框开关函数
-
-  const sendUpdateRequest = async (obj: {
-    keyword: Search<HostColumns>;
-    values: Array<Field<HostColumnsUpdate>>;
-  }) => {
-    try {
-      await updateHostApi(obj);
-      // message.success(ret.msg);
-    } catch (identifier: any) {
-      message.error(identifier.toString());
-      return;
-    }
-  }; // 发送创建请求
-
-  const transformData = () => {
-    // 使用Object.entries()方法获取对象的键值对数组，并利用reduce()方法进行筛选和生成新对象
-    console.log(updateData);
-
-    const filteredData: Array<{ key: string; value: any }> = Object.entries(updateData).reduce(
-      (acc, [key, value]) => {
-        if (value !== undefined && value !== '') {
-          if (value === 'null') {
-            if (
-              key !== HostColumns.ALERT &&
-              key !== HostColumns.ALIVE &&
-              key !== HostColumns.CITY &&
-              key !== HostColumns.ORGANIZER
-            ) {
-              acc.push({ key: key, value: null });
-            } else {
-              message.warning(
-                t('st.columns.' + key) + t('st.base.not_allow') + t('st.op.eq') + value.toString(),
-              );
-            }
-          } else {
-            acc.push({ key: key, value: value }); // 将包含 key 和 value 属性的对象推入数组
-          }
-        }
-        return acc;
-      },
-      [],
-    );
-
-    console.log(filteredData);
-
-    return filteredData;
-  };
-
-  const confirmUpdate = async () => {
-    validate()
-      .then(async () => {
-        const filteredData = transformData();
-
-        const searchData: Search<HostColumns> = {
-          offset: 0,
-          limit: 1,
-          order: null,
-          order_field: null,
-          fields: [{ key: HostColumns.ID, op: Operator.EQ, value: computedParams.value.id }],
-        };
-        const requestDataForUpdate = {
-          keyword: searchData,
-          values: filteredData,
-        };
-
-        await sendUpdateRequest(requestDataForUpdate);
-        await getSourceData(computedParams.value.id);
-        showModalForUpdate();
-      })
-      .catch((identifier) => {
-        console.log('error', identifier);
-        message.error('wrong');
-      });
-  }; // 发起创建请求
 
   onMounted(async () => {
     await getSourceData(computedParams.value.id);

@@ -73,11 +73,11 @@ export interface Field<T> {
 }
 
 export interface Search<T> {
-  offset: number | undefined | null;
-  limit: number | undefined | null;
-  order_field: T | undefined | null;
-  order: Order | undefined | null;
-  fields: Field<T>[];
+  offset?: number | null;
+  limit?: number | null;
+  order_field?: T | null;
+  order?: Order | null;
+  fields?: Field<T>[];
 }
 
 export interface WebResponse<T> {

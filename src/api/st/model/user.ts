@@ -1,25 +1,25 @@
 import { createLabelArray } from './base';
 
 export interface UserCreate {
-  username: string | undefined;
-  nickname: string | undefined;
-  email: string | undefined;
-  note: string | undefined;
-  license: string | undefined;
-  password: string | undefined;
-  rank: number | undefined;
-  active: boolean | undefined;
+  username?: string;
+  nickname?: string;
+  email?: string;
+  note?: string;
+  license?: string;
+  password?: string;
+  rank?: number;
+  active?: boolean;
 }
 
 export interface User extends UserCreate {
-  id: number;
+  id: string;
   rank: number;
   active: boolean;
   last_login: Date;
   this_login: Date;
   created_date: Date;
   updated_date: Date;
-  license_rank: number | undefined;
+  license_rank?: number;
 }
 
 export enum UserColumns {
@@ -57,7 +57,7 @@ export const UserColumnsType = {
     UserColumns.CREATED_DATE,
     UserColumns.UPDATED_DATE,
   ],
-  number: [UserColumns.ID, UserColumns.RANK, UserColumns.LICENSE_RANK],
+  number: [UserColumns.RANK, UserColumns.LICENSE_RANK],
   boolean: [UserColumns.ACTIVE],
   select: {},
 };

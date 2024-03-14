@@ -73,7 +73,8 @@
     "encode": "编码",
     "task": "任务",
     "schedule": "计划",
-    "rel": "关联"
+    "rel": "关联",
+    "resume": "恢复"
   },
   "op": {
     "true": "True",
@@ -262,7 +263,23 @@
     "node": "节点",
     "msg": "信息",
     "elapsed": "耗时",
-    "tactics": "策略"
+    "tactics": "策略",
+    "cancel_threshold": "终止阈值",
+    "timeout": "超时",
+    "args": "不定参数",
+    "kwds": "指定参数",
+    "run_date": "运行日期",
+    "timezone": "时区",
+    "year": "年",
+    "month": "月",
+    "day": "日",
+    "week": "周",
+    "day_of_week": "一周中",
+    "hour": "时",
+    "minute": "分",
+    "second": "秒",
+    "start_date": "开始日期",
+    "end_date": "结束日期"
   },
   "menu": {
     "data": "数据页",
@@ -325,6 +342,12 @@
     "attach_handle": "附加句柄后才会产生日志记录",
     "not_attach_handle": "如果句柄列表中不存在'InterceptHandler'则未附加",
     "delete_handle": "从句柄列表中删除'InterceptHandler'",
-    "cover_handle": "使用'InterceptHandler'替换整个句柄列表"
+    "cover_handle": "使用'InterceptHandler'替换整个句柄列表",
+    "cancel_threshold": "当任务超时并且完成任务的节点占比到达阈值时终止本轮任务",
+    "single_limit": "每个节点最多可同时执行的该任务数量",
+    "total_limit": "整个集群中可同时运行的该任务数量",
+    "timezone": "Asia/Shanghai：中国上海时区，根据夏令时调整。America/New_York：美国纽约时区，美国东部标准时间，根据夏令时调整。Europe/London：英国伦敦时区，英国格林威治标准时间，根据夏令时调整。America/Los_Angeles：美国洛杉矶时区，太平洋标准时间，根据夏令时调整。Europe/Paris：法国巴黎时区，中欧标准时间，根据夏令时调整。Australia/Sydney：澳大利亚悉尼时区，澳大利亚东部标准时间，根据夏令时调整。America/Chicago：美国芝加哥时区，中部标准时间，根据夏令时调整。Europe/Berlin：德国柏林时区，中欧标准时间，根据夏令时调整。America/Toronto：加拿大多伦多时区，美国东部标准时间，根据夏令时调整。Asia/Tokyo：日本东京时区，日本标准时间，不调整夏令时。America/Sao_Paulo：巴西圣保罗时区，巴西时间，根据夏令时调整。",
+    "kwds_editor": "以JSON格式指定参数",
+    "keyword": "一条关键词匹配规则可以添加多个关键词组，当一条规则中的每个关键词组都至少有一个关键词命中时，视为该条规则命中"
   }
 }

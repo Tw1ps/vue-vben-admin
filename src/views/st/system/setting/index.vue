@@ -178,6 +178,7 @@
   const confirmSet = async () => {
     validate()
       .then(async () => {
+        if (valueType.value === 'object') setData.value = JSON.parse(setData.value);
         await sendSetRequest(setData);
         await getSourceData(undefined);
         showModalForSet();

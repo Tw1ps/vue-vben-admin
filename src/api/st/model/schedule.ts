@@ -57,7 +57,7 @@ enum TZ {
 
 export interface Kwds {
   args?: Array<any>;
-  kwds?: object;
+  kwargs?: object;
 }
 
 export interface DateKwds extends Kwds {
@@ -81,10 +81,10 @@ export interface CronKwds extends Kwds {
 
 export interface IntervalKwds extends Kwds {
   weeks?: number;
-  days?: Number;
-  hours?: Number;
-  minutes?: Number;
-  seconds?: Number;
+  days?: number;
+  hours?: number;
+  minutes?: number;
+  seconds?: number;
   start_date?: Date | number | string;
   end_date?: Date | number | string;
   timezone?: TZ | string;

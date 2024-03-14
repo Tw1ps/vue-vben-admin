@@ -1,7 +1,7 @@
 import { createLabelArray } from './base';
 
 export interface KeywordCreate {
-  keyword?: Array<Array<string>>;
+  keyword: Array<Array<string>>;
   active: boolean;
   note?: string;
 }

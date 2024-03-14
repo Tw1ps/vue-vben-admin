@@ -24,6 +24,15 @@ const asset: AppRouteModule = {
       },
     },
     {
+      path: 'keyword',
+      name: 'Keyword',
+      component: () => import('/@/views/st/keyword/index.vue'),
+      meta: {
+        // affix: true,
+        title: t('st.page.keyword'),
+      },
+    },
+    {
       path: 'task',
       name: 'Task',
       component: () => import('@/views/st/task/index.vue'),
@@ -32,15 +41,6 @@ const asset: AppRouteModule = {
         title: t('st.page.task'),
       },
     },
-    // {
-    //   path: 'keyword',
-    //   name: 'Keyword',
-    //   component: () => import('/@/views/st/keyword/index.vue'),
-    //   meta: {
-    //     // affix: true,
-    //     title: t('st.page.keyword'),
-    //   },
-    // },
     // {
     //   path: 'host',
     //   name: 'Host',

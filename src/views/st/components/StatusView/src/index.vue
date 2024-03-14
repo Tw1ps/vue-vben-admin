@@ -75,21 +75,15 @@
         />
       </DescriptionsItem>
     </Descriptions>
-    <div>
-      <div v-if="dt.screenshot && dt.screenshot != '-'">
-        <Image
-          :preview="{ visible: false }"
-          :src="'data:image/png;base64,' + dt.screenshot"
-          @click="visible = true"
-      /></div>
-      <div style="display: none">
-        <ImagePreviewGroup :preview="{ visible, onVisibleChange: (vis) => (visible = vis) }">
+    <div class="h-50 overflow-x-auto">
+      <ImagePreviewGroup>
+        <Flex horizontal>
           <div :key="idx" v-for="(d, idx) in dataSource">
-            <div v-if="d.screenshot && d.screenshot != '-'">
+            <div class="!m-2" v-if="d.screenshot && d.screenshot != '-'">
               <Image :src="'data:image/png;base64,' + d.screenshot" /></div
           ></div>
-        </ImagePreviewGroup>
-      </div>
+        </Flex>
+      </ImagePreviewGroup>
     </div>
     <slot name="footer"></slot>
   </Card>
@@ -105,6 +99,7 @@
     Progress,
     Badge,
     ImagePreviewGroup,
+    Flex,
   } from 'ant-design-vue';
   import { defineComponent, onMounted, ref } from 'vue';
 
@@ -128,6 +123,7 @@
       Progress,
       Badge,
       ImagePreviewGroup,
+      Flex,
     },
   });
 </script>
@@ -211,7 +207,6 @@
   const column = ref<number>(props.column);
   const bordered = ref<boolean>(props.bordered);
   const currentTime = ref(dayjs()); // 当前时间
-  const visible = ref(false);
   const loading = ref(false);
 
   const toFixedTwo = (value, fix: number = 2) => {

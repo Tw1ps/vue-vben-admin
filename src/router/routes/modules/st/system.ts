@@ -36,12 +36,12 @@ const system: AppRouteModule = {
       },
     },
     {
-      path: 'fmtlog',
-      name: 'FmtLog',
-      component: () => import('@/views/st/fmtlogs/index.vue'),
+      path: 'requestlog',
+      name: 'requestlog',
+      component: () => import('@/views/st/requestlog/index.vue'),
       meta: {
         // affix: true,
-        title: t('st.page.fmt_log'),
+        title: t('st.page.request_log'),
       },
     },
     {

@@ -6,7 +6,6 @@ import { ErrorMessageMode } from '#/axios';
 
 enum Api {
   SEARCH = '/host/',
-  SEARCH_DETAIL = '/host/detail',
   CREATE = '/host/create',
   DELETE = '/host/delete',
   UPDATE = '/host/update',
@@ -17,21 +16,6 @@ export function getHostApi(data: Search<HostColumns>, mode: ErrorMessageMode = '
     {
       url: Api.SEARCH,
       data,
-    },
-    {
-      errorMessageMode: mode,
-      timeout: 120000,
-    },
-  );
-}
-
-export function getHostDetailApi(
-  hid: number | string | Array<any>,
-  mode: ErrorMessageMode = 'modal',
-) {
-  return defHttp.post<Host>(
-    {
-      url: Api.SEARCH_DETAIL + '?id=' + hid,
     },
     {
       errorMessageMode: mode,

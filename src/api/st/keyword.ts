@@ -51,10 +51,14 @@ export function updateKeywordApi(
   );
 }
 
-export function createKeywordApi(data: KeywordCreate, mode: ErrorMessageMode = 'modal') {
+export function createKeywordApi(
+  data: KeywordCreate,
+  bot_id: string,
+  mode: ErrorMessageMode = 'modal',
+) {
   return defHttp.post<Keyword>(
     {
-      url: Api.CREATE,
+      url: `${Api.CREATE}?bot_id=${bot_id}`,
       data,
     },
     {
@@ -63,10 +67,10 @@ export function createKeywordApi(data: KeywordCreate, mode: ErrorMessageMode = '
   );
 }
 
-export function uploadKeywordApi(data: FormData, mode: ErrorMessageMode = 'modal') {
+export function uploadKeywordApi(data: FormData, bot_id: string, mode: ErrorMessageMode = 'modal') {
   return defHttp.post<Keyword>(
     {
-      url: Api.UPLOAD,
+      url: `${Api.UPLOAD}?bot_id=${bot_id}`,
       data,
     },
     {

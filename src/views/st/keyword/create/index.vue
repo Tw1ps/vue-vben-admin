@@ -9,6 +9,9 @@
     >
       <Card :bordered="false" size="small">
         <Form :label-col="{ span: 4 }" :wrapper-col="{ span: 14 }">
+          <FormItem :label="t('st.base.rel') + t('st.base.bot')">
+            <Select v-model:value="botId" :option="botData" />
+          </FormItem>
           <FormItem :label="t('st.columns.keyword')">
             <Flex :key="idx" v-for="(kws, idx) in createData.keyword">
               <Select
@@ -41,6 +44,12 @@
           <FormItem :label="t('st.columns.note')">
             <Input v-model:value="createData.note" allowClear />
           </FormItem>
+          <FormItem :label="t('st.columns.ktype')">
+            <Select v-model:value="createData.ktype">
+              <a-select-option :value="0">{{ t('st.enum.white') }}</a-select-option>
+              <a-select-option :value="1">{{ t('st.enum.black') }}</a-select-option>
+            </Select>
+          </FormItem>
           <FormItem :label="t('st.columns.active')">
             <Switch v-model:checked="createData.active" />
           </FormItem>
@@ -72,9 +81,17 @@
     Flex,
     Popconfirm,
   } from 'ant-design-vue';
-  import { defineComponent } from 'vue';
+  import { defineComponent, onMounted } from 'vue';
 
-  import { resetFields, confirmCreate, createData, visibleCreateModal } from './create';
+  import {
+    resetFields,
+    confirmCreate,
+    createData,
+    visibleCreateModal,
+    getBotData,
+    botData,
+    botId,
+  } from './create';
 
   export default defineComponent({
     name: 'CreateModal',
@@ -95,4 +112,8 @@
 </script>
 <script lang="ts" setup>
   const { t } = useI18n();
+
+  onMounted(async () => {
+    await getBotData();
+  });
 </script>

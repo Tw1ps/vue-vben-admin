@@ -74,7 +74,8 @@
     "task": "任务",
     "schedule": "计划",
     "rel": "关联",
-    "resume": "恢复"
+    "resume": "恢复",
+    "bot": "机器人"
   },
   "op": {
     "true": "True",
@@ -132,7 +133,9 @@
     "performance": "性能",
     "local": "本地",
     "single_limit": "单机限制",
-    "total_limit": "总数限制"
+    "total_limit": "总数限制",
+    "white": "白名单",
+    "black": "黑名单"
   },
   "columns": {
     "id": "ID",
@@ -312,7 +315,7 @@
     "node_detail": "节点详情",
     "node_status": "节点状态",
     "system_log": "系统日志",
-    "fmt_log": "格式日志",
+    "request_log": "请求日志",
     "task": "任务管理"
   },
   "pageIntro": {

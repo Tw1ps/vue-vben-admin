@@ -180,8 +180,8 @@ const transform: AxiosTransform = {
     errorLogStore.addAjaxErrorInfo(error);
     const { response, code, config } = error || {};
     const errorMessageMode = config?.requestOptions?.errorMessageMode || 'none';
-    const msg: string = response?.data?.detail?.msg ?? '';
-    const message: string = response?.data?.detail?.msg ?? '';
+    const msg: string = response?.data?.msg ?? '';
+    const message: string = response?.data?.msg ?? '';
     const err: string = error?.toString?.() ?? '';
     let errMessage = '';
     console.log(error);
@@ -200,6 +200,9 @@ const transform: AxiosTransform = {
 
       if (msg) {
         errMessage = msg;
+        if (error?.response?.status === 401) {
+          checkStatus(error?.response?.status, msg, errorMessageMode);
+        }
       }
 
       if (errMessage) {

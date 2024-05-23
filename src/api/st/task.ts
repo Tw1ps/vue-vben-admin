@@ -2,7 +2,7 @@ import { defHttp } from '@/utils/http/axios';
 
 import { ErrorMessageMode } from '#/axios';
 
-import { Task, Worker, Statistics } from './model/task';
+import { Task, Statistics } from './model/task';
 
 enum Api {
   TASK = '/task/',
@@ -24,7 +24,7 @@ export function getTaskApi(mode: ErrorMessageMode = 'modal') {
 }
 
 export function getWorkersApi(mode: ErrorMessageMode = 'modal') {
-  return defHttp.post<Map<string, Worker>>(
+  return defHttp.post<Map<string, Map<string, number>>>(
     {
       url: Api.WORKERS,
     },

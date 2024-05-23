@@ -24,6 +24,11 @@ const columns: BasicColumn[] = [
     width: 120,
   },
   {
+    title: t('st.columns.ktype'),
+    dataIndex: 'ktype',
+    width: 120,
+  },
+  {
     title: t('st.columns.note'),
     dataIndex: 'note',
     align: 'left',

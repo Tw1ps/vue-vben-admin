@@ -21,6 +21,10 @@
           <Tag color="green" v-if="text">True</Tag>
           <Tag color="red" v-if="!text">False</Tag>
         </template>
+        <template v-if="column.key === 'ktype'">
+          <div v-if="text === 1"> {{ t('st.enum.white') }} </div>
+          <div v-if="text === 0"> {{ t('st.enum.black') }} </div>
+        </template>
         <template v-if="column.key === 'keyword'">
           <Card
             :key="idx"

@@ -12,7 +12,7 @@ export interface BotCreate {
 }
 
 export interface Bot extends BotCreate {
-  id: number;
+  id: string;
   name: string;
   apikey: string;
   security: {};
@@ -86,7 +86,7 @@ export const BotProviderArray = createLabelArray(BotProvider);
 
 export const BotColumnsType = {
   datetime: [],
-  number: [BotColumns.ID],
+  number: [],
   boolean: [BotColumns.ACTIVE],
   select: { provider: BotProvider, ktype: BotType },
   array: [BotColumns.AT_USER],

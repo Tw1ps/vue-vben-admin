@@ -9,13 +9,6 @@ export interface Task {
   note?: string;
 }
 
-export interface Worker {
-  os: string;
-  memory_total: number;
-  memory_free: number;
-  task_count: Map<string, number>;
-}
-
 export interface TaskExecuteInfo {
   node: string;
   msg?: string;

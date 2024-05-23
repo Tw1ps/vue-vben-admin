@@ -1,6 +1,6 @@
-import { getLogsApi } from '@/api/st/fmtlog';
+import { getLogsApi } from '@/api/st/requestlog';
 import { Search, Order } from '@/api/st/model/base';
-import { LogsColumns } from '@/api/st/model/fmtlog';
+import { LogsColumns } from '@/api/st/model/requestlog';
 import { message } from 'ant-design-vue';
 import { reactive } from 'vue';
 

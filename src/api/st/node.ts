@@ -19,6 +19,12 @@ enum Api {
   GETPROCESS = '/node/get_process',
   GETASYNCTASK = '/node/get_async_task',
   CONNECTIONS = '/node/connections',
+  LogAddHandle = '/node/add_handle',
+  LogDelHandle = '/node/del_handle',
+  LogShowHandle = '/node/show_handle',
+  LogCoverHandle = '/node/cover_handle',
+  LogSetLevel = '/node/set_level',
+  GetAllLoggers = '/node/all_loggers',
 }
 
 export function getAllNodeApi(mode: ErrorMessageMode = 'modal') {
@@ -218,6 +224,76 @@ export function readLogApi(
   return defHttp.post<string>(
     {
       url: `${Api.LOGREAD}?cid=${cid}&filename=${filename}`,
+    },
+    {
+      errorMessageMode: mode,
+    },
+  );
+}
+
+export function getLogHandleApi(name: string, mode: ErrorMessageMode = 'modal') {
+  return defHttp.post(
+    {
+      url: `${Api.LogShowHandle}?name=${name}`,
+    },
+    {
+      errorMessageMode: mode,
+    },
+  );
+}
+
+export function addLogHandleApi(name: string, mode: ErrorMessageMode = 'modal') {
+  return defHttp.post(
+    {
+      url: `${Api.LogAddHandle}?name=${name}`,
+    },
+    {
+      errorMessageMode: mode,
+    },
+  );
+}
+
+export function delLogHandleApi(name: string, mode: ErrorMessageMode = 'modal') {
+  return defHttp.post(
+    {
+      url: `${Api.LogDelHandle}?name=${name}`,
+    },
+    {
+      errorMessageMode: mode,
+    },
+  );
+}
+
+export function coverLogHandleApi(name: string, mode: ErrorMessageMode = 'modal') {
+  return defHttp.post(
+    {
+      url: `${Api.LogCoverHandle}?name=${name}`,
+    },
+    {
+      errorMessageMode: mode,
+    },
+  );
+}
+
+export function getAllLoggerApi(mode: ErrorMessageMode = 'modal') {
+  return defHttp.post(
+    {
+      url: Api.GetAllLoggers,
+    },
+    {
+      errorMessageMode: mode,
+    },
+  );
+}
+
+export function setLogLevelApi(
+  name: string,
+  level: string | number,
+  mode: ErrorMessageMode = 'modal',
+) {
+  return defHttp.post(
+    {
+      url: `${Api.LogSetLevel}?name=${name}&level=${level}`,
     },
     {
       errorMessageMode: mode,
